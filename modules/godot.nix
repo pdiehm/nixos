@@ -27,7 +27,7 @@ in {
 
       path = lib.mkOption {
         default = "$VISUAL";
-        type = lib.types.path;
+        type = lib.types.str;
       };
     };
 
@@ -75,7 +75,7 @@ in {
       "network/connection/check_for_updates" = 0;
       "network/connection/network_mode" = if cfg.online then 1 else 0;
       "text_editor/external/exec_flags" = cfg.externalEditor.args;
-      "text_editor/external/exec_path" = toString cfg.externalEditor.path;
+      "text_editor/external/exec_path" = cfg.externalEditor.path;
       "text_editor/external/use_external_editor" = cfg.externalEditor.enable;
     };
   };

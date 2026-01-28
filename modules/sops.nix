@@ -6,10 +6,10 @@
 
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { config, ... }: {
+        { config, name, ... }: {
           options = {
             key = lib.mkOption {
-              default = config._module.args.name;
+              default = name;
               type = lib.types.str;
             };
 
@@ -19,7 +19,7 @@
             };
 
             name = lib.mkOption {
-              default = "common/${config._module.args.name}";
+              default = "common/${name}";
               type = lib.types.str;
             };
 

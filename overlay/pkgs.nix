@@ -10,24 +10,22 @@ pkgs: prev: {
     meta.mainProgram = "dynhostmgr";
   };
 
-  prettier = pkgs.importNpmLock.buildNodeModules rec {
-    nodejs = pkgs.nodePackages.nodejs;
-    npmRoot = ./prettier;
-
-    derivationArgs = {
-      nativeBuildInputs = [ pkgs.makeWrapper ];
-      meta.mainProgram = "prettier";
-
-      postInstall = ''
-        makeWrapper ${pkgs.lib.getExe nodejs} "$out/bin/prettier" \
-          --add-flags "$out/node_modules/prettier/bin/prettier.cjs" \
-          --add-flags "--plugin $out/node_modules/@prettier/plugin-php/standalone.js" \
-          --add-flags "--plugin $out/node_modules/@prettier/plugin-xml/src/plugin.js" \
-          --add-flags "--plugin $out/node_modules/prettier-plugin-css-order/src/main.mjs" \
-          --add-flags "--plugin $out/node_modules/prettier-plugin-organize-imports/index.js"
-      '';
+  prettier = let
+    modules = pkgs.importNpmLock.buildNodeModules {
+      nodejs = pkgs.nodePackages.nodejs;
+      npmRoot = ./prettier;
     };
-  };
+  in pkgs.writeShellScriptBin "prettier" ''
+    exec -a "$0" ${pkgs.lib.getExe pkgs.bubblewrap} \
+      --new-session --die-with-parent --unshare-all \
+      --ro-bind /nix/store /nix/store --bind "$PWD" "$PWD" \
+      ${pkgs.lib.getExe pkgs.nodePackages.nodejs} "${modules}/node_modules/prettier/bin/prettier.cjs" \
+      --plugin "${modules}/node_modules/@prettier/plugin-php/standalone.js" \
+      --plugin "${modules}/node_modules/@prettier/plugin-xml/src/plugin.js" \
+      --plugin "${modules}/node_modules/prettier-plugin-css-order/src/main.mjs" \
+      --plugin "${modules}/node_modules/prettier-plugin-organize-imports/index.js" \
+      "$@"
+  '';
 
   vimPlugins = prev.vimPlugins // {
     conform-nvim = prev.vimPlugins.conform-nvim.overrideAttrs (prev: {

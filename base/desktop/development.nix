@@ -61,4 +61,21 @@
       };
     };
   };
+
+  security.bwrap = {
+    cargo = {
+      bind = [ "/home/pascal/.cargo" ];
+      pwd = true;
+    };
+
+    npm = {
+      bind = [ "/home/pascal/.npm" ];
+      pwd = true;
+    };
+
+    npx = {
+      bind = [ "/home/pascal/.npm" ];
+      pwd = true;
+    };
+  };
 }

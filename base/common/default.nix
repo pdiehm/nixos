@@ -3,6 +3,7 @@
     ./boot.nix
     ./docker.nix
     ./git.nix
+    ./hardening.nix
     ./home-manager.nix
     ./htop.nix
     ./locale.nix

@@ -39,7 +39,7 @@
 
   outputs = inputs: let
     lib = inputs.nixpkgs.lib.extend (import extra/lib.nix) |> (lib: lib.extend (lib: prev: inputs.home-manager.lib));
-    pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux.extend (import overlay/pkgs.nix);
+    pkgs = lib.foldl (pkgs: pkgs.extend) inputs.nixpkgs.legacyPackages.x86_64-linux (import ./overlay);
 
     mkScript = name: runtimeInputs: pkgs.writeShellApplication {
       inherit name runtimeInputs;
@@ -49,7 +49,6 @@
     mkSystem = name: cfg: lib.nixosSystem {
       modules = [
         ./modules
-        ./overlay
         base/common
         base/${cfg.type}
         machines/${name}

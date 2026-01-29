@@ -35,6 +35,7 @@
           ChatGPT = "https://chatgpt.com";
           Cloudflare = "https://dash.cloudflare.com";
           Hetzner = "https://console.hetzner.cloud";
+          "Hyprland Wiki" = "https://wiki.hypr.land";
           Netflix = "https://netflix.com";
           PayPal = "https://paypal.com";
           Sparkasse = "https://sparkasse-mainfranken.de";

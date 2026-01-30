@@ -10,14 +10,13 @@
       ProcSubset = "pid";
       ProtectClock = true;
       ProtectControlGroups = "strict";
-      ProtectHome = "read-only";
       ProtectHostname = true;
       ProtectKernelLogs = true;
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
       ProtectSystem = "strict";
-      ReadWritePaths = [ "/root/.gnupg" "/var/lib/duplicity" ];
+      ReadWritePaths = [ "/root" "/var/lib/duplicity" ];
       RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
       RestrictNamespaces = true;
       RestrictRealtime = true;

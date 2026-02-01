@@ -38,7 +38,7 @@
         externalEditor = {
           enable = true;
           args = "{project} {file} {line}";
-          path = lib.readFile ../../resources/scripts/godot-editor.sh |> pkgs.writeShellScript "godot-editor" |> toString;
+          path = lib.readFile ../../resources/scripts/godot-editor.sh |> pkgs.writeShellScriptBin "godot-editor" |> lib.getExe;
         };
 
         projects = {

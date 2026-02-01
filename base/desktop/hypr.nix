@@ -136,7 +136,7 @@
           "SUPER, f, fullscreen"
 
           "SUPER, Return, exec, kitty"
-          "SUPER, Space, exec, rofi -show drun"
+          "SUPER, Space, exec, rofi -drun-show-actions -show drun"
           "SUPER, e, exec, dolphin"
 
           ", Print, exec, ${lib.getExe pkgs.hyprshot} --output-folder /home/pascal/Temp --mode active --mode output"

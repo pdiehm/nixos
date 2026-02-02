@@ -6,6 +6,6 @@
   { "name": "markdown-viewer-chrome", "id": "markdown-viewer@outofindex.com", "source": "https://addons.mozilla.org/firefox/downloads/file/4186249/markdown_viewer_chrome-5.2.2.xpi" },
   { "name": "react-devtools", "id": "@react-devtools", "source": "https://addons.mozilla.org/firefox/downloads/file/4432990/react_devtools-6.1.1.xpi" },
   { "name": "return-youtube-dislikes", "id": "{762f9885-5a13-4abd-9c77-433dcd38b8fd}", "source": "https://addons.mozilla.org/firefox/downloads/file/4371820/return_youtube_dislikes-3.0.0.18.xpi" },
-  { "name": "ublock-origin", "id": "uBlock0@raymondhill.net", "source": "https://addons.mozilla.org/firefox/downloads/file/4629131/ublock_origin-1.68.0.xpi" },
+  { "name": "ublock-origin", "id": "uBlock0@raymondhill.net", "source": "https://addons.mozilla.org/firefox/downloads/file/4675310/ublock_origin-1.69.0.xpi" },
   { "name": "vimium-ff", "id": "{d7742d87-e61d-4b78-b8a1-b469842139fa}", "source": "https://addons.mozilla.org/firefox/downloads/file/4618554/vimium_ff-2.3.1.xpi" }
 ]

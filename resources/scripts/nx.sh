@@ -10,6 +10,7 @@ elif [ "$1" = "help" ]; then
   echo
   echo "Commands:"
   echo "  help                 Show this help"
+  echo "  build [host]         Build current configuration"
   echo "  diff                 List new commits"
   echo "  edit                 Open editor in repository"
   echo "  iso                  Build installer image"
@@ -18,9 +19,11 @@ elif [ "$1" = "help" ]; then
   echo "  reset <gen> [mode]   Reset to previous generation"
   echo "  secrets [type]       Edit secret stores"
   echo "  sync                 Sync repository"
-  echo "  test                 Test configuration"
+  echo "  test                 Test current configuration"
   echo "  upgrade [mode]       Upgrade machine"
   echo "  version              Show system version"
+elif [ "$1" = "build" ]; then
+  nixos-rebuild --impure --flake "$HOME/.config/nixos#${2:-$NIXOS_MACHINE_NAME}" build
 elif [ "$1" = "diff" ]; then
   REV="$(nixos-version --configuration-revision)"
 

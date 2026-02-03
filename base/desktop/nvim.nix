@@ -360,6 +360,7 @@
             "<Space>g" = "live_grep";
             "<Space>h" = "help_tags";
             "<Space>j" = "jumplist";
+            "<Space>k" = "grep_string";
             "<Space>l" = "resume";
             "<Space>o" = "vim_options";
             "<Space>p" = "diagnostics";
@@ -367,10 +368,10 @@
             "<Space>r" = "lsp_references";
             "<Space>s" = "git_status";
             "<Space>t" = "todo-comments";
+            "<Space>v" = "git_bcommits";
             "<Space>w" = "lsp_workspace_symbols";
             "<Space>x" = "current_buffer_fuzzy_find";
-            "<Space>y" = "grep_string";
-            "<Space>z" = "git_bcommits";
+            "<Space>z" = "git_stash";
           };
 
           settings.defaults = {

@@ -126,10 +126,9 @@
           stl = "stash list";
           stm = "stash push --include-untracked --message";
           stp = "stash pop";
-          sts = "stash show --patch";
+          sts = "stash show --include-untracked --patch";
 
           sh = "show";
-          shs = "show stash";
 
           t = "tag";
           td = "tag --delete";

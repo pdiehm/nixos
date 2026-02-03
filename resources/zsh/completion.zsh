@@ -2,30 +2,50 @@
 
 function _backup() {
   if [ "$CURRENT" = 2 ]; then
-    _values command help status list restore clone
-  elif [ "$CURRENT" = 3 ]; then
-    if [[ "${words[2]}" == (status|list|clone) ]]; then
+    _values command clone list restore status
+  elif [ "${words[2]}" = "clone" ]; then
+    if [ "$CURRENT" = 3 ]; then
       _values machine "${(f)$(ls /home/pascal/.config/nixos/machines)}"
-    elif [ "${words[2]}" = "restore" ]; then
+    elif [ "$CURRENT" = 4 ]; then
       _files
+    elif [ "$CURRENT" = 5 ]; then
+      _files
+    fi
+  elif [ "${words[2]}" = "list" ]; then
+    if [ "$CURRENT" = 3 ]; then
+      _values machine "${(f)$(ls /home/pascal/.config/nixos/machines)}"
+    fi
+  elif [ "${words[2]}" = "restore" ]; then
+    if [ "$CURRENT" = 3 ]; then
+      _files
+    fi
+  elif [ "${words[2]}" = "status" ]; then
+    if [ "$CURRENT" = 3 ]; then
+      _values machine "${(f)$(ls /home/pascal/.config/nixos/machines)}"
     fi
   fi
 }
 
 function _nx() {
   if [ "$CURRENT" = 2 ]; then
-    _values command help sync diff version edit test upgrade list reset repl secrets iso
-  elif [ "$CURRENT" = 3 ]; then
-    if [ "${words[2]}" = "upgrade" ]; then
-      _values mode boot switch
-    elif [ "${words[2]}" = "repl" ]; then
+    _values command help diff edit iso list repl reset secrets sync test upgrade version
+  elif [ "${words[2]}" = "repl" ]; then
+    if [ "$CURRENT" = 3 ]; then
       _values host "${(f)$(ls /home/pascal/.config/nixos/machines)}"
-    elif [ "${words[2]}" = "secrets" ]; then
+    fi
+  elif [ "${words[2]}" = "reset" ]; then
+    if [ "$CURRENT" = 3 ]; then
+      _values gen "${(f)$(nixos-rebuild list-generations --json | jq ".[].generation")}"
+    elif [ "$CURRENT" = 4 ]; then
+      _values mode test boot switch
+    fi
+  elif [ "${words[2]}" = "secrets" ]; then
+    if [ "$CURRENT" = 3 ]; then
       _values type "${(f)$(ls /home/pascal/.config/nixos/resources/secrets)}"
     fi
-  elif [ "$CURRENT" = 4 ]; then
-    if [ "${words[2]}" = "reset" ]; then
-      _values mode test boot switch
+  elif [ "${words[2]}" = "upgrade" ]; then
+    if [ "$CURRENT" = 3 ]; then
+      _values mode boot switch
     fi
   fi
 }
@@ -41,23 +61,39 @@ compdef _xh xhs
 if [ "$NIXOS_MACHINE_TYPE" = "desktop" ]; then
   function _repo() {
     if [ "$CURRENT" = 2 ]; then
-      _values command help list status clone update edit shell exec remove
-    elif [ "$CURRENT" = 3 ]; then
-      if [[ "${words[2]}" == (status|update|edit|shell|exec|remove) ]]; then
+      _values command help clone edit exec list remove shell status update
+    elif [ "${words[2]}" = "edit" ]; then
+      if [ "$CURRENT" = 3 ]; then
         _values name "${(f)$(ls /home/pascal/Repos)}"
-      fi
-    elif [ "$CURRENT" = 4 ]; then
-      if [ "${words[2]}" = "edit" ]; then
+      elif [ "$CURRENT" = 4 ]; then
         _files -W "/home/pascal/Repos/${words[3]}"
-      elif [ "${words[2]}" = "shell" ]; then
-        _files -/ -W "/home/pascal/Repos/${words[3]}"
-      elif [ "${words[2]}" = "exec" ]; then
-        _command_names -e
       fi
     elif [ "${words[2]}" = "exec" ]; then
-      words=("${words[4]}" "${words[5,-1]}")
-      CURRENT="$((CURRENT - 3))"
-      _normal
+      if [ "$CURRENT" = 3 ]; then
+        _values name "${(f)$(ls /home/pascal/Repos)}"
+      else
+        words=("${words[4]}" "${words[5,-1]}")
+        CURRENT="$((CURRENT - 3))"
+        _normal
+      fi
+    elif [ "${words[2]}" = "remove" ]; then
+      if [ "$CURRENT" = 3 ]; then
+        _values name "${(f)$(ls /home/pascal/Repos)}"
+      fi
+    elif [ "${words[2]}" = "shell" ]; then
+      if [ "$CURRENT" = 3 ]; then
+        _values name "${(f)$(ls /home/pascal/Repos)}"
+      elif [ "$CURRENT" = 4 ]; then
+        _files -/ -W "/home/pascal/Repos/${words[3]}"
+      fi
+    elif [ "${words[2]}" = "status" ]; then
+      if [ "$CURRENT" = 3 ]; then
+        _values name "${(f)$(ls /home/pascal/Repos)}"
+      fi
+    elif [ "${words[2]}" = "update" ]; then
+      if [ "$CURRENT" = 3 ]; then
+        _values name "${(f)$(ls /home/pascal/Repos)}"
+      fi
     fi
   }
 

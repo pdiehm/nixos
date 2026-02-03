@@ -59,8 +59,7 @@ elif [ "$1" = "test" ]; then
 elif [ "$1" = "upgrade" ]; then
   sudo --validate
   while true; do
-    trap 'kill -- -"$$"' EXIT
-    sleep 250
+    for _ in {0..99}; do sleep 1; done
     sudo --validate
   done &
 

@@ -9,5 +9,5 @@ elif [ -f "${2:-$1}" ]; then
   echo "${2:-$1} already exists"
   exit 1
 else
-  YEAR="$(date "+%Y")" envsubst <"${DIR}/$1" >"${2:-$1}"
+  sed "s/@YEAR@/$(date "+%Y")/" <"${DIR}/$1" >"${2:-$1}"
 fi

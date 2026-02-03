@@ -59,16 +59,12 @@
     ydotool.enable = true;
 
     scripts = {
+      mk.text = lib.readFile ../../resources/scripts/mk.sh |> lib.templateString { DIR = "${../../resources/mk}"; };
       repo.text = lib.readFile ../../resources/scripts/repo.sh;
       wp-toggle.text = lib.readFile ../../resources/scripts/wp-toggle.sh;
 
       ha.text = lib.readFile ../../resources/scripts/ha.sh
         |> lib.templateString { TOKEN = config.sops.secrets.home-assistant-token.path; };
-
-      mk = {
-        deps = [ pkgs.gettext ];
-        text = lib.readFile ../../resources/scripts/mk.sh |> lib.templateString { DIR = "${../../resources/mk}"; };
-      };
 
       mnt = {
         deps = [ pkgs.android-file-transfer pkgs.curlftpfs pkgs.sshfs ];

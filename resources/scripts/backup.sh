@@ -19,20 +19,10 @@ elif [ "$1" = "help" ]; then
   echo
   echo "Commands:"
   echo "  help                              Show this help"
-  echo "  status [machine]                  Show backup status"
-  echo "  list [machine]                    List backed up files"
-  echo "  restore [path] [time]             Restore a backup"
   echo "  clone [machine [path]] <target>   Clone a backup"
-elif [ "$1" = "status" ]; then
-  dup collection-status "${TARGET}/${2:-${MACHINE}}"
-elif [ "$1" = "list" ]; then
-  dup list-current-files "${TARGET}/${2:-${MACHINE}}"
-elif [ "$1" = "restore" ]; then
-  TMP="$(mktemp -d)"
-  dup restore ${2:+--path-to-restore "${2#/}"} ${3:+--time "$3"} "${TARGET}/${MACHINE}" "$TMP"
-
-  cp -arv "$TMP/." "${2:-/}"
-  rm -rf "$TMP"
+  echo "  list [machine]                    List files in backup"
+  echo "  restore [path] [time]             Restore a backup"
+  echo "  status [machine]                  Show backup status"
 elif [ "$1" = "clone" ]; then
   if [ "$#" = 2 ]; then
     dup restore "${TARGET}/${MACHINE}" "$2"
@@ -44,6 +34,16 @@ elif [ "$1" = "clone" ]; then
     echo "Usage: backup clone [machine [path]] <target>"
     exit 1
   fi
+elif [ "$1" = "list" ]; then
+  dup list-current-files "${TARGET}/${2:-${MACHINE}}"
+elif [ "$1" = "restore" ]; then
+  TMP="$(mktemp -d)"
+  dup restore ${2:+--path-to-restore "${2#/}"} ${3:+--time "$3"} "${TARGET}/${MACHINE}" "$TMP"
+
+  cp -arv "$TMP/." "${2:-/}"
+  rm -rf "$TMP"
+elif [ "$1" = "status" ]; then
+  dup collection-status "${TARGET}/${2:-${MACHINE}}"
 else
   echo "Unknown command: $1"
   exit 1

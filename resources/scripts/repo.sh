@@ -11,14 +11,67 @@ elif [ "$1" = "help" ]; then
   echo
   echo "Commands:"
   echo "  help                   Show this help"
-  echo "  list                   List all repos"
-  echo "  status [name]          Show status of one or all repos"
   echo "  clone <url> [name]     Clone a repo"
-  echo "  update [name]          Update one or all repos"
   echo "  edit <name> [path]     Open editor in a repo"
-  echo "  shell <name> [path]    Open shell in a repo"
   echo "  exec <name> <cmd...>   Execute a command in a repo"
+  echo "  list                   List all repos"
   echo "  remove <name>          Remove a repo"
+  echo "  shell <name> [path]    Open shell in a repo"
+  echo "  status [name]          Show status of one or all repos"
+  echo "  update [name]          Update one or all repos"
+elif [ "$1" = "clone" ]; then
+  if [ "$#" = 2 ]; then
+    git clone "$2"
+  elif [ "$#" = 3 ]; then
+    git clone "$2" "$3"
+  else
+    echo "Usage: repo clone <url> [name]"
+    exit 1
+  fi
+elif [ "$1" = "edit" ]; then
+  if [ "$#" -lt 2 ]; then
+    echo "Usage: repo edit <name> [path]"
+    exit 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "Repo '$2' not found. Do you want to clone gh:/$2.git?"
+    echo
+    read -r -n 1 -p "[y/N] " RES
+    echo
+
+    test "$RES" = "y" || exit 1
+    git clone "gh:/$2.git"
+  fi
+
+  cd "$2"
+  if [ "$#" = 3 ]; then
+    if [ -d "$3" ]; then
+      cd "$3"
+      exec "$EDITOR" .
+    elif [ -f "$3" ]; then
+      cd "$(dirname "$3")"
+      exec "$EDITOR" "$(basename "$3")"
+    else
+      echo "Path '$3' not found."
+      exit 1
+    fi
+  else
+    exec "$EDITOR" .
+  fi
+elif [ "$1" = "exec" ]; then
+  if [ "$#" -lt 3 ]; then
+    echo "Usage: repo exec <name> <cmd...>"
+    exit 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "Repo '$2' not found."
+    exit 1
+  fi
+
+  cd "$2"
+  exec "${@:3}"
 elif [ "$1" = "list" ]; then
   for REPO in *; do
     test -d "$REPO" || continue
@@ -51,6 +104,65 @@ elif [ "$1" = "list" ]; then
 
     cd ..
   done | column --table --table-columns $'\e[4mRepo,Head,Remote\e[m'
+elif [ "$1" = "remove" ]; then
+  if [ "$#" -lt 2 ]; then
+    echo "Usage: repo remove <name>"
+    exit 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "Repo '$2' not found."
+    exit 1
+  fi
+
+  cd "$2"
+  CHANGES=""
+  test -n "$(git status --porcelain)" && CHANGES+="  - Uncommitted changes\n"
+  test -n "$(git stash list)" && CHANGES+="  - Stashed changes\n"
+
+  while read -r BRANCH; do
+    if git rev-parse "$BRANCH@{upstream}" &>/dev/null; then
+      test -n "$(git rev-list "$BRANCH@{upstream}..$BRANCH")" && CHANGES+="  - Unpushed commits ($BRANCH)\n"
+    else
+      CHANGES+="  - Local branch ($BRANCH)\n"
+    fi
+  done < <(git branch --format "%(refname:short)")
+
+  if [ -n "$CHANGES" ]; then
+    echo "The repository has been changed:"
+    echo -e "$CHANGES"
+    echo "Are you sure you want to remove the repo?"
+    echo
+    read -r -n 1 -p "[y/N] " RES
+    echo
+
+    test "$RES" = "y" || exit 1
+  fi
+
+  cd ..
+  rm -rf "$2"
+elif [ "$1" = "shell" ]; then
+  if [ "$#" -lt 2 ]; then
+    echo "Usage: repo shell <name> [path]"
+    exit 1
+  fi
+
+  if [ ! -d "$2" ]; then
+    echo "Repo '$2' not found."
+    exit 1
+  fi
+
+  cd "$2"
+  if [ "$#" = 3 ]; then
+    if [ ! -d "$3" ]; then
+      echo "Directory '$3' not found."
+      exit 1
+    fi
+
+    cd "$3"
+  fi
+
+  exec "$SHELL"
 elif [ "$1" = "status" ]; then
   function status() {
     cd "$1"
@@ -107,15 +219,6 @@ elif [ "$1" = "status" ]; then
     status "$2"
   else
     echo "Usage: repo status [name]"
-    exit 1
-  fi
-elif [ "$1" = "clone" ]; then
-  if [ "$#" = 2 ]; then
-    git clone "$2"
-  elif [ "$#" = 3 ]; then
-    git clone "$2" "$3"
-  else
-    echo "Usage: repo clone <url> [name]"
     exit 1
   fi
 elif [ "$1" = "update" ]; then
@@ -181,109 +284,6 @@ elif [ "$1" = "update" ]; then
     echo "Usage: repo update [name]"
     exit 1
   fi
-elif [ "$1" = "edit" ]; then
-  if [ "$#" -lt 2 ]; then
-    echo "Usage: repo edit <name> [path]"
-    exit 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "Repo '$2' not found. Do you want to clone gh:/$2.git?"
-    echo
-    read -r -n 1 -p "[y/N] " RES
-    echo
-
-    test "$RES" = "y" || exit 1
-    git clone "gh:/$2.git"
-  fi
-
-  cd "$2"
-  if [ "$#" = 3 ]; then
-    if [ -d "$3" ]; then
-      cd "$3"
-      exec "$EDITOR" .
-    elif [ -f "$3" ]; then
-      cd "$(dirname "$3")"
-      exec "$EDITOR" "$(basename "$3")"
-    else
-      echo "Path '$3' not found."
-      exit 1
-    fi
-  else
-    exec "$EDITOR" .
-  fi
-elif [ "$1" = "shell" ]; then
-  if [ "$#" -lt 2 ]; then
-    echo "Usage: repo shell <name> [path]"
-    exit 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "Repo '$2' not found."
-    exit 1
-  fi
-
-  cd "$2"
-  if [ "$#" = 3 ]; then
-    if [ ! -d "$3" ]; then
-      echo "Directory '$3' not found."
-      exit 1
-    fi
-
-    cd "$3"
-  fi
-
-  exec "$SHELL"
-elif [ "$1" = "exec" ]; then
-  if [ "$#" -lt 3 ]; then
-    echo "Usage: repo exec <name> <cmd...>"
-    exit 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "Repo '$2' not found."
-    exit 1
-  fi
-
-  cd "$2"
-  exec "${@:3}"
-elif [ "$1" = "remove" ]; then
-  if [ "$#" -lt 2 ]; then
-    echo "Usage: repo remove <name>"
-    exit 1
-  fi
-
-  if [ ! -d "$2" ]; then
-    echo "Repo '$2' not found."
-    exit 1
-  fi
-
-  cd "$2"
-  CHANGES=""
-  test -n "$(git status --porcelain)" && CHANGES+="  - Uncommitted changes\n"
-  test -n "$(git stash list)" && CHANGES+="  - Stashed changes\n"
-
-  while read -r BRANCH; do
-    if git rev-parse "$BRANCH@{upstream}" &>/dev/null; then
-      test -n "$(git rev-list "$BRANCH@{upstream}..$BRANCH")" && CHANGES+="  - Unpushed commits ($BRANCH)\n"
-    else
-      CHANGES+="  - Local branch ($BRANCH)\n"
-    fi
-  done < <(git branch --format "%(refname:short)")
-
-  if [ -n "$CHANGES" ]; then
-    echo "The repository has been changed:"
-    echo -e "$CHANGES"
-    echo "Are you sure you want to remove the repo?"
-    echo
-    read -r -n 1 -p "[y/N] " RES
-    echo
-
-    test "$RES" = "y" || exit 1
-  fi
-
-  cd ..
-  rm -rf "$2"
 else
   echo "Unknown command: $1"
   exit 1

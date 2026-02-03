@@ -1,6 +1,6 @@
 { lib, pkgs, ... }: {
   home-manager.users.pascal = {
-    home.packages = [ pkgs.yubikey-manager ];
+    home.packages = [ pkgs.yubikey-manager pkgs.yubioath-flutter ];
     programs.gpg.scdaemonSettings.disable-ccid = true;
   };
 

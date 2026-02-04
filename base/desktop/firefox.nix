@@ -36,6 +36,7 @@
           Cloudflare = "https://dash.cloudflare.com";
           Hetzner = "https://console.hetzner.cloud";
           "Hyprland Wiki" = "https://wiki.hypr.land";
+          Monkeytype = "https://monkeytype.com";
           Netflix = "https://netflix.com";
           PayPal = "https://paypal.com";
           Sparkasse = "https://sparkasse-mainfranken.de";

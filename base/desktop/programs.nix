@@ -37,11 +37,7 @@
 
       kitty = {
         enable = true;
-
-        settings = {
-          scrollback_pager = "nvim -c 'Man!' -c 'set cmdheight=0 ft=' -c '$'"; # HACK: nvim >=0.12
-          scrollback_pager_history_size = 1024;
-        };
+        settings.scrollback_pager_history_size = 1024;
       };
     };
 

@@ -5,7 +5,6 @@
     enable = true;
 
     policies = {
-      DisableFirefoxAccounts = true;
       PasswordManagerEnabled = false;
       HttpAllowlist = [ "http://homeassistant:8123" ];
 

@@ -28,7 +28,7 @@ function _backup() {
 
 function _nx() {
   if [ "$CURRENT" = 2 ]; then
-    _values command help build diff edit iso list repl reset secrets sync test upgrade version
+    _values command help build diff edit iso off list repl reset secrets sync test upgrade version
   elif [ "${words[2]}" = "build" ]; then
     if [ "$CURRENT" = 3 ]; then
       _values host "${(f)$(ls /home/pascal/.config/nixos/machines)}"

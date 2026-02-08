@@ -15,6 +15,7 @@ elif [ "$1" = "help" ]; then
   echo "  edit                 Open editor in repository"
   echo "  iso                  Build installer image"
   echo "  list                 List installed generations"
+  echo "  off                  Sync, upgrade and poweroff"
   echo "  repl [host]          Start repl in configuration"
   echo "  reset <gen> [mode]   Reset to previous generation"
   echo "  secrets [type]       Edit secret stores"
@@ -43,6 +44,10 @@ elif [ "$1" = "iso" ]; then
   rm result
 elif [ "$1" = "list" ]; then
   nixos-rebuild list-generations
+elif [ "$1" = "off" ]; then
+  nx sync
+  nx upgrade
+  poweroff
 elif [ "$1" = "repl" ]; then
   nixos-rebuild --impure --flake "$HOME/.config/nixos#${2:-$NIXOS_MACHINE_NAME}" repl
 elif [ "$1" = "reset" ]; then

@@ -106,8 +106,7 @@
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
         "browser.newtabpage.activity-stream.feeds.topsites" = false;
-        "browser.newtabpage.activity-stream.newtabWallpapers.wallpaper" = "dark-beach";
-        "browser.newtabpage.activity-stream.newtabWallpapers.wallpaper-dark" = "dark-beach";
+        "browser.newtabpage.activity-stream.newtabWallpapers.wallpaper" = "starry-sky";
         "browser.newtabpage.activity-stream.showSponsoredCheckboxes" = false;
         "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
         "browser.search.suggest.enabled" = false;
@@ -125,8 +124,6 @@
         "extensions.formautofill.addresses.enabled" = false;
         "extensions.formautofill.creditCards.enabled" = false;
         "media.eme.enabled" = true;
-        "media.webspeech.synth.dont_notify_on_error" = true;
-        "network.trr.mode" = 5;
         "places.history.enabled" = false;
         "privacy.history.custom" = true;
       };

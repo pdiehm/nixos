@@ -1,4 +1,5 @@
 { config, ... }: {
+  home-manager.users.pascal.services.network-manager-applet.enable = true;
   sops.secrets.network = { };
   users.users.pascal.extraGroups = [ "networkmanager" ];
 

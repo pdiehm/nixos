@@ -1,12 +1,1 @@
-{
-  imports = [
-    ./audio.nix
-    ./games.nix
-    ./misc.nix
-    ./networking.nix
-    ./printer.nix
-    ./ups.nix
-    ./via.nix
-    ./virtualisation.nix
-  ];
-}
+{ imports = [ ./audio.nix ./games.nix ./misc.nix ./networking.nix ./printer.nix ./ups.nix ./virtualisation.nix ]; }

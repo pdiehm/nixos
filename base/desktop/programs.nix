@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  services.speechd.enable = false;
+  hardware.keyboard.qmk.enable = true;
   sops.secrets.home-assistant-token.owner = "pascal";
   users.users.pascal.extraGroups = [ "ydotool" ];
 
@@ -26,6 +26,7 @@
       pkgs.scripts.wp-toggle
       pkgs.steam-run-free
       pkgs.vhs
+      pkgs.via
       pkgs.wf-recorder
       pkgs.wl-clipboard
       pkgs.wl-mirror
@@ -67,5 +68,10 @@
         text = lib.readFile ../../resources/scripts/mnt.sh;
       };
     };
+  };
+
+  services = {
+    speechd.enable = false;
+    udev.packages = [ pkgs.via ];
   };
 }

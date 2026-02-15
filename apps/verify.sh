@@ -24,7 +24,7 @@ nix build --accept-flake-config -o /nix/var/nix/gcroots/ci/statix github:oppilia
 
 while read -r FILE; do
   echo "Checking $FILE"
-  DIAGNOSTICS="$(nil diagnostics "$FILE" && /nix/var/nix/gcroots/ci/statix/bin/statix check "$FILE" || true)"
+  DIAGNOSTICS="$(nil diagnostics "$FILE" 2>&1 && /nix/var/nix/gcroots/ci/statix/bin/statix check "$FILE" 2>&1 || true)"
 
   if [ -z "$DIAGNOSTICS" ]; then
     echo "- :white_check_mark: $FILE" >>"$GITHUB_STEP_SUMMARY"
@@ -46,7 +46,7 @@ echo "## Shell files" >>"$GITHUB_STEP_SUMMARY"
 
 while read -r FILE; do
   echo "Checking $FILE"
-  DIAGNOSTICS="$(shellcheck "$FILE" || true)"
+  DIAGNOSTICS="$(shellcheck "$FILE" 2>&1 || true)"
 
   if [ -z "$DIAGNOSTICS" ]; then
     echo "- :white_check_mark: $FILE" >>"$GITHUB_STEP_SUMMARY"

@@ -2,7 +2,7 @@
   { "name": "bitwarden-password-manager", "id": "{446900e4-71c2-419f-a6a7-df9c091e268b}", "source": "https://addons.mozilla.org/firefox/downloads/file/4664623/bitwarden_password_manager-2025.12.1.xpi" },
   { "name": "dictionary-german", "id": "de-DE@dictionaries.addons.mozilla.org", "source": "https://addons.mozilla.org/firefox/downloads/file/4034565/dictionary_german-2.1.xpi" },
   { "name": "dont-track-me-google1", "id": "dont-track-me-google@robwu.nl", "source": "https://addons.mozilla.org/firefox/downloads/file/4132891/dont_track_me_google1-4.28.xpi" },
-  { "name": "flagfox", "id": "{1018e4d6-728f-4b20-ad56-37578a4de76b}", "source": "https://addons.mozilla.org/firefox/downloads/file/4653992/flagfox-6.1.94.xpi" },
+  { "name": "flagfox", "id": "{1018e4d6-728f-4b20-ad56-37578a4de76b}", "source": "https://addons.mozilla.org/firefox/downloads/file/4680465/flagfox-6.1.95.xpi" },
   { "name": "markdown-viewer-chrome", "id": "markdown-viewer@outofindex.com", "source": "https://addons.mozilla.org/firefox/downloads/file/4186249/markdown_viewer_chrome-5.2.2.xpi" },
   { "name": "react-devtools", "id": "@react-devtools", "source": "https://addons.mozilla.org/firefox/downloads/file/4432990/react_devtools-6.1.1.xpi" },
   { "name": "return-youtube-dislikes", "id": "{762f9885-5a13-4abd-9c77-433dcd38b8fd}", "source": "https://addons.mozilla.org/firefox/downloads/file/4371820/return_youtube_dislikes-3.0.0.18.xpi" },

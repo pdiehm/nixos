@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 function await() {
-  "$@"
+  eval "$*"
   ntfy "Command '$*' finished with exit code $?"
 }
 

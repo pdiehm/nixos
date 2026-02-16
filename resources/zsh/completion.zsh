@@ -54,6 +54,7 @@ function _nx() {
   fi
 }
 
+compdef '_arguments ":cmd:_command_names" "*::args:_normal"' await
 compdef _backup backup
 compdef _files ed
 compdef _files mkcd

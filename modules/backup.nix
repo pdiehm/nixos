@@ -2,12 +2,12 @@
   cfg = config.services.backup;
 in {
   options.services.backup = {
-    postStart = lib.mkOption {
+    postScript = lib.mkOption {
       default = "";
       type = lib.types.lines;
     };
 
-    preStart = lib.mkOption {
+    preScript = lib.mkOption {
       default = "";
       type = lib.types.lines;
     };
@@ -56,8 +56,8 @@ in {
         BACKUP_KEY = config.sops.common."backup/key".path;
         BACKUP_PASS = config.sops.common."backup/pass".path;
         MACHINE = machine.name;
-        POST_START = pkgs.writeShellScript "backup-post" cfg.postStart;
-        PRE_START = pkgs.writeShellScript "backup-pre" cfg.preStart;
+        POST_SCRIPT = pkgs.writeShellScript "backup-post" cfg.postScript;
+        PRE_SCRIPT = pkgs.writeShellScript "backup-pre" cfg.preScript;
         SPEC = lib.flatten paths |> lib.escapeShellArgs;
         TARGET = "sftp://pascal@bowser:1970/archive/Backups";
       };

@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+function await() {
+  "$@"
+  ntfy "Command '$*' finished with exit code $?"
+}
+
 function ed() {
   if [ "$#" = 0 ]; then
     "$EDITOR"

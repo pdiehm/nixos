@@ -72,13 +72,20 @@ test -n "$CHANGES" && {
 echo "::endgroup::"
 
 echo "::group::Vim spellfiles"
-pushd resources/vim
-curl -fsSLO https://ftp.nluug.nl/vim/runtime/spell/de.utf-8.spl
-curl -fsSLO https://ftp.nluug.nl/vim/runtime/spell/de.utf-8.sug
-curl -fsSLO https://ftp.nluug.nl/vim/runtime/spell/en.utf-8.spl
-curl -fsSLO https://ftp.nluug.nl/vim/runtime/spell/en.utf-8.sug
+TMP="$(mktemp -d)"
+pushd "$TMP"
+curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/de/de_DE_frami.aff
+curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/de/de_DE_frami.dic
+curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff
+curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic
 popd
 
+pushd resources/vim
+nvim -c "silent mkspell! de $TMP/de_DE_frami" -c q
+nvim -c "silent mkspell! en $TMP/en_US" -c q
+popd
+
+rm -rf "$TMP"
 CHANGES="$(git status --porcelain resources/vim)"
 git add resources/vim
 

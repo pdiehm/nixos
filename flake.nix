@@ -69,7 +69,7 @@
 
     packages.x86_64-linux = lib.mapAttrs mkScript {
       nixvim = [ nixosConfigurations.pascal-pc.config.home-manager.users.pascal.programs.nixvim.build.package ];
-      upgrade = [ ];
+      upgrade = [ pkgs.neovim ];
       verify = [ pkgs.colorized-logs pkgs.nil pkgs.shellcheck ];
 
       install = [

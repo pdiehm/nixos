@@ -36,9 +36,7 @@
 
       extraFiles = {
         "spell/de.utf-8.spl".source = ../../resources/vim/de.utf-8.spl;
-        "spell/de.utf-8.sug".source = ../../resources/vim/de.utf-8.sug;
         "spell/en.utf-8.spl".source = ../../resources/vim/en.utf-8.spl;
-        "spell/en.utf-8.sug".source = ../../resources/vim/en.utf-8.sug;
       };
 
       keymaps = lib.mkNvimKeymaps {

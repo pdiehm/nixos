@@ -129,6 +129,7 @@
           sts = "stash show --include-untracked --patch";
 
           sh = "show";
+          shs = "show --stat";
 
           t = "tag";
           td = "tag --delete";

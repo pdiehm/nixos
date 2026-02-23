@@ -10,7 +10,7 @@
 
   nixpkgs = {
     hostPlatform = "x86_64-linux";
-    overlays = import ../../overlay;
+    overlays = [ (import ../../overlay) ];
   };
 
   system = {

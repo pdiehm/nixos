@@ -1,13 +1,17 @@
 { lib, modulesPath, pkgs, ... }: {
-  imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ../overlay ];
+  imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
   console.keyMap = "de";
   environment.systemPackages = [ (pkgs.writeShellScriptBin "nixinstall" "nix run github:pdiehm/nixos#install") ];
-  nixpkgs.hostPlatform = "x86_64-linux";
 
   nix.settings = {
     experimental-features = [ "flakes" "nix-command" "pipe-operators" ];
     substituters = lib.mkForce [ "http://127.0.0.1:5777" ];
     trusted-public-keys = [ "private:Gj04okCf2KAYVNSQ5vwXCgOLRz+ESUGi/YlvT1rsnpQ=" ];
+  };
+
+  nixpkgs = {
+    hostPlatform = "x86_64-linux";
+    overlays = [ (import ../overlay) ];
   };
 
   services = {

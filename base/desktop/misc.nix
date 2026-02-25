@@ -1,7 +1,11 @@
 { lib, pkgs, ... }: {
-  boot.kernel.sysctl."kernel.sysrq" = 1;
   security.rtkit.enable = true;
   services.logind.settings.Login.HandlePowerKey = "suspend";
+
+  boot = {
+    kernel.sysctl."kernel.sysrq" = 1;
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
   home-manager.users.pascal.programs.git.signing = {
     key = "E85EB0566C779A2F";

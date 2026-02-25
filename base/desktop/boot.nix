@@ -1,8 +1,5 @@
-{ pkgs, ... }: {
-  boot = {
-    initrd.luks.devices.nixos.device = "/dev/disk/by-partlabel/nixos";
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
+{
+  boot.initrd.luks.devices.nixos.device = "/dev/disk/by-partlabel/nixos";
 
   services.getty = {
     autologinOnce = true;

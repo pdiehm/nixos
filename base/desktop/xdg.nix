@@ -8,7 +8,7 @@
       defaultApplications = {
         "application/gzip" = "org.kde.ark.desktop";
         "application/json" = "firefox.desktop";
-        "application/pdf" = "org.kde.okular.desktop";
+        "application/pdf" = "firefox.desktop";
         "application/vnd.efi.iso" = "org.kde.ark.desktop";
         "application/x-compressed-tar" = "org.kde.ark.desktop";
         "application/x-cpio" = "org.kde.ark.desktop";

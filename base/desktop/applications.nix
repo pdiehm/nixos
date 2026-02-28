@@ -7,7 +7,6 @@
       file = {
         ".config/dolphinrc".source = ../../resources/kde/dolphin.toml;
         ".config/gwenviewrc".source = ../../resources/kde/gwenview.toml;
-        ".config/okularpartrc".source = ../../resources/kde/okular.toml;
         ".local/share/user-places.xbel".source = ../../resources/kde/user-places.xml;
 
         ".config/menus/applications.menu" = {
@@ -24,7 +23,6 @@
         pkgs.kdePackages.gwenview
         pkgs.kdePackages.k3b
         pkgs.kdePackages.kdegraphics-thumbnailers
-        pkgs.kdePackages.okular
         pkgs.networkmanagerapplet
         pkgs.pdfpc
         pkgs.pwvucontrol

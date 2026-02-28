@@ -29,13 +29,20 @@
       pkgs.zip
     ];
 
-    programs.tmux = {
-      enable = true;
-      clock24 = true;
-      escapeTime = 0;
-      extraConfig = lib.readFile ../../resources/tmux.conf;
-      newSession = true;
-      terminal = "screen-256color";
+    programs = {
+      parallel = {
+        enable = true;
+        will-cite = true;
+      };
+
+      tmux = {
+        enable = true;
+        clock24 = true;
+        escapeTime = 0;
+        extraConfig = lib.readFile ../../resources/tmux.conf;
+        newSession = true;
+        terminal = "screen-256color";
+      };
     };
   };
 

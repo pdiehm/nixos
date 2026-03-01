@@ -1,6 +1,4 @@
-{ pkgs, ... }: {
-  home-manager.users.pascal.home.packages = [ pkgs.nix-output-monitor ];
-
+{
   nix = {
     channel.enable = false;
 

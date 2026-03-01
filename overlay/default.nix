@@ -10,6 +10,16 @@ pkgs: prev: {
     meta.mainProgram = "dynhostmgr";
   };
 
+  # HACK: https://nixpkgs-tracker.ocfox.me/?pr=490763
+  less = prev.less.overrideAttrs (prev: rec {
+    version = "692";
+
+    src = pkgs.fetchurl {
+      url = "https://www.greenwoodsoftware.com/less/less-${version}.tar.gz";
+      hash = "sha256-YTAPYDeY7PHXeGVweJ8P8/WhrPB1pvufdWg30WbjfRQ=";
+    };
+  });
+
   prettier = let
     modules = pkgs.importNpmLock.buildNodeModules {
       nodejs = pkgs.nodejs;

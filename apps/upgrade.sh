@@ -79,8 +79,8 @@ curl -fsSLO https://raw.githubusercontent.com/LibreOffice/dictionaries/refs/head
 popd
 
 pushd resources/vim
-nvim -c "silent mkspell! de $TMP/de_DE_frami" -c q
-nvim -c "silent mkspell! en $TMP/en_US" -c q
+nvim --headless -c "silent mkspell! de $TMP/de_DE_frami" -c q
+nvim --headless -c "silent mkspell! en $TMP/en_US" -c q
 popd
 
 rm -rf "$TMP"

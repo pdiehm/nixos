@@ -12,6 +12,7 @@ pkgs: prev: {
 
   prettier = let
     modules = pkgs.importNpmLock.buildNodeModules {
+      derivationArgs.nativeBuildInputs = [ pkgs.nodejs ]; # HACK: this should not be necessary...
       nodejs = pkgs.nodePackages.nodejs;
       npmRoot = ./prettier;
     };

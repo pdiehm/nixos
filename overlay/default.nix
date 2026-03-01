@@ -12,15 +12,14 @@ pkgs: prev: {
 
   prettier = let
     modules = pkgs.importNpmLock.buildNodeModules {
-      derivationArgs.nativeBuildInputs = [ pkgs.nodejs ]; # HACK: this should not be necessary...
-      nodejs = pkgs.nodePackages.nodejs;
+      nodejs = pkgs.nodejs;
       npmRoot = ./prettier;
     };
   in pkgs.writeShellScriptBin "prettier" ''
     exec -a "$0" ${pkgs.lib.getExe pkgs.bubblewrap} \
       --new-session --die-with-parent --unshare-all \
       --ro-bind /nix/store /nix/store --bind "$PWD" "$PWD" \
-      ${pkgs.lib.getExe pkgs.nodePackages.nodejs} "${modules}/node_modules/prettier/bin/prettier.cjs" \
+      ${pkgs.lib.getExe pkgs.nodejs} "${modules}/node_modules/prettier/bin/prettier.cjs" \
       --plugin "${modules}/node_modules/@prettier/plugin-php/standalone.js" \
       --plugin "${modules}/node_modules/@prettier/plugin-xml/src/plugin.js" \
       --plugin "${modules}/node_modules/prettier-plugin-css-order/src/main.mjs" \

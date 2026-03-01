@@ -16,7 +16,7 @@
         pkgs.gnumake
         pkgs.gradle
         pkgs.ninja
-        pkgs.nodePackages_latest.nodejs
+        pkgs.nodejs_latest
         pkgs.php
         pkgs.python3
         pkgs.rustc

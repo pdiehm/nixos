@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 
 function await() {
-  local PRE="$(($(date "+%s%N") / 1000000))"
+  local PRE="$(date "+%s%3N")"
   eval "$*"
 
   local STATUS="$?"
-  local NOW="$(($(date "+%s%N") / 1000000))"
+  local NOW="$(date "+%s%3N")"
 
   ntfy "Command '$*' finished in $((NOW - PRE))ms with exit code $STATUS"
   return "$STATUS"

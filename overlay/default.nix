@@ -22,7 +22,7 @@ pkgs: prev: {
 
   prettier = let
     modules = pkgs.importNpmLock.buildNodeModules {
-      nodejs = pkgs.nodejs;
+      inherit (pkgs) nodejs;
       npmRoot = ./prettier;
     };
   in pkgs.writeShellScriptBin "prettier" ''

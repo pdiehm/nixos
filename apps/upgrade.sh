@@ -72,10 +72,10 @@ echo "::endgroup::"
 echo "::group::Vim spellfiles"
 TMP="$(mktemp -d)"
 pushd "$TMP"
-curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/de/de_DE_frami.aff
-curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/de/de_DE_frami.dic
-curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff
-curl -fsSLO https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic
+curl -fsSLO https://raw.githubusercontent.com/LibreOffice/dictionaries/refs/heads/master/de/de_DE_frami.aff
+curl -fsSLO https://raw.githubusercontent.com/LibreOffice/dictionaries/refs/heads/master/de/de_DE_frami.dic
+curl -fsSLO https://raw.githubusercontent.com/LibreOffice/dictionaries/refs/heads/master/en/en_US.aff
+curl -fsSLO https://raw.githubusercontent.com/LibreOffice/dictionaries/refs/heads/master/en/en_US.dic
 popd
 
 pushd resources/vim

@@ -3,7 +3,7 @@ version: 2
 multi-ecosystem-groups:
   all:
     schedule:
-      cronjob: 0 2 * * 1
+      cronjob: 0 0 * * 0
       interval: cron
 
 updates:

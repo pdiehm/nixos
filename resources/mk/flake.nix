@@ -3,7 +3,7 @@
 
   outputs = { nixpkgs, ... }: let
     inherit (nixpkgs) lib;
-    eachSystem = fn: lib.genAttrs (lib.attrNames nixpkgs.legacyPackages) (sys: fn nixpkgs.legacyPackages.${sys});
+    eachSystem = fn: lib.genAttrs lib.systems.flakeExposed (sys: fn nixpkgs.legacyPackages.${sys});
   in {
     packages = eachSystem (pkgs: {
       default = pkgs.writeShellApplication {

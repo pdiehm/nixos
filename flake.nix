@@ -37,11 +37,20 @@
     };
   };
 
-  outputs = inputs: let
-    lib = inputs.nixpkgs.lib.extend (import extra/lib.nix) |> (lib: lib.extend (lib: prev: inputs.home-manager.lib));
-    pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux.extend (import ./overlay);
+  outputs = inputs@{ nixpkgs, ... }: let
+    lib = nixpkgs.lib.foldl (lib: lib.extend) nixpkgs.lib [ (import extra/lib.nix) (lib: prev: inputs.home-manager.lib) ];
 
-    mkScript = name: runtimeInputs: pkgs.writeShellApplication {
+    eachSystem =
+      fn: lib.genAttrs lib.systems.flakeExposed (sys: fn (nixpkgs.legacyPackages.${sys}.extend (import ./overlay)));
+
+    installer = lib.genAttrs lib.systems.flakeExposed (
+      system: lib.nixosSystem {
+        modules = [ extra/installer.nix ];
+        specialArgs = { inherit system; };
+      }
+    );
+
+    mkScript = pkgs: name: runtimeInputs: pkgs.writeShellApplication {
       inherit name runtimeInputs;
       text = lib.readFile apps/${name}.sh;
     };
@@ -61,31 +70,30 @@
       };
     };
   in rec {
-    legacyPackages.x86_64-linux = pkgs;
+    legacyPackages = eachSystem (pkgs: pkgs);
+    nixosConfigurations = lib.importJSON ./machines.json |> lib.mapAttrs mkSystem |> lib.mergeAttrs { inherit installer; };
 
-    nixosConfigurations = lib.importJSON ./machines.json
-      |> lib.mapAttrs mkSystem
-      |> lib.mergeAttrs { installer = lib.nixosSystem { modules = [ extra/installer.nix ]; }; };
+    packages = eachSystem (
+      pkgs: lib.mapAttrs (mkScript pkgs) {
+        nixvim = [ nixosConfigurations.pascal-pc.config.home-manager.users.pascal.programs.nixvim.build.package ];
+        upgrade = [ pkgs.cargo-edit pkgs.neovim ];
+        verify = [ pkgs.colorized-logs pkgs.nil pkgs.shellcheck ];
 
-    packages.x86_64-linux = lib.mapAttrs mkScript {
-      nixvim = [ nixosConfigurations.pascal-pc.config.home-manager.users.pascal.programs.nixvim.build.package ];
-      upgrade = [ pkgs.cargo-edit pkgs.neovim ];
-      verify = [ pkgs.colorized-logs pkgs.nil pkgs.shellcheck ];
-
-      install = [
-        pkgs.btrfs-progs
-        pkgs.cryptsetup
-        pkgs.curl
-        pkgs.dosfstools
-        pkgs.git
-        pkgs.gnupg
-        pkgs.iproute2
-        pkgs.jq
-        pkgs.parted
-        pkgs.pinentry-tty
-        pkgs.sbctl
-        (pkgs.writeShellScriptBin "machines" "cat ${./machines.json}")
-      ];
-    };
+        install = [
+          pkgs.btrfs-progs
+          pkgs.cryptsetup
+          pkgs.curl
+          pkgs.dosfstools
+          pkgs.git
+          pkgs.gnupg
+          pkgs.iproute2
+          pkgs.jq
+          pkgs.parted
+          pkgs.pinentry-tty
+          pkgs.sbctl
+          (pkgs.writeShellScriptBin "machines" "cat ${./machines.json}")
+        ];
+      }
+    );
   };
 }

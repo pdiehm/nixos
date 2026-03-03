@@ -13,7 +13,7 @@ elif [ "$1" = "help" ]; then
   echo "  build [host]         Build current configuration"
   echo "  diff                 List new commits"
   echo "  edit                 Open editor in repository"
-  echo "  iso                  Build installer image"
+  echo "  iso [system]         Build installer image"
   echo "  list                 List installed generations"
   echo "  off                  Sync, upgrade and poweroff"
   echo "  repl [host]          Start repl in configuration"
@@ -39,7 +39,7 @@ elif [ "$1" = "edit" ]; then
   cd ~/.config/nixos
   exec "$EDITOR" .
 elif [ "$1" = "iso" ]; then
-  nix build ~/.config/nixos#nixosConfigurations.installer.config.system.build.isoImage
+  nix build "$HOME/.config/nixos#nixosConfigurations.installer.${2:-$(nix eval --raw nixpkgs#stdenv.hostPlatform.system)}.config.system.build.isoImage"
   cp result/iso/*.iso nixos.iso
   rm result
 elif [ "$1" = "list" ]; then

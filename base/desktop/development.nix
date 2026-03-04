@@ -18,9 +18,9 @@
         pkgs.ninja
         pkgs.nodejs_latest
         pkgs.php
-        pkgs.python3
         pkgs.rustc
         pkgs.sqlite-interactive
+        (pkgs.python3.withPackages (py: [ py.matplotlib py.numpy py.pygame-ce py.requests py.tkinter ]))
       ];
 
       sessionVariables = {

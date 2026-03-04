@@ -24,13 +24,17 @@
       pkgs.scripts.mnt
       pkgs.scripts.repo
       pkgs.scripts.wp-toggle
-      pkgs.steam-run-free
       pkgs.vhs
       pkgs.via
       pkgs.wf-recorder
       pkgs.wl-clipboard
       pkgs.wl-mirror
       pkgs.yt-dlp
+
+      (pkgs.buildFHSEnv {
+        name = "fhs";
+        runScript = pkgs.writeShellScript "run" ''if [ "$#" = 0 ]; then exec bash; else exec "$@"; fi'';
+      })
     ];
 
     programs = {

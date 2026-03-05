@@ -17,7 +17,10 @@
     pcscd.enable = true;
 
     udev.extraRules = ''
-      ACTION=="add", SUBSYSTEM=="usb", ENV{PRODUCT}=="1050/407/543", ENV{ID_SERIAL_SHORT}=="0016869449", RUN+="${lib.getExe' pkgs.systemd "loginctl"} unlock-sessions"
+      ACTION=="add", SUBSYSTEM=="usb", ENV{PRODUCT}=="1050/407/543", ENV{ID_SERIAL_SHORT}=="0016869449", RUN+="${pkgs.writeShellScript "yubikey-unlock" ''
+        test "$(${lib.getExe pkgs.yubikey-manager} otp calculate 2 50415343414c | sha256sum | cut -d ' ' -f 1)" = "e1cba9fd67f19f28f76b44a2ad5c3f87a7b3bb213d1c39713fe280c1a34769bf" || exit
+        ${lib.getExe' pkgs.systemd "loginctl"} unlock-sessions
+      ''}"
 
       ACTION=="remove", SUBSYSTEM=="input", ENV{PRODUCT}=="3/1050/407/110", ENV{ID_SERIAL_SHORT}=="0016869449", RUN+="${pkgs.writeShellScript "yubikey-lock" ''
         for DEVICE in /dev/input/event*; do

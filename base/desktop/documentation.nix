@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  documentation.dev.enable = true;
   environment.persistence."/perm".users.pascal.directories = [ ".cache/tlrc" ];
 
   home-manager.users.pascal = {

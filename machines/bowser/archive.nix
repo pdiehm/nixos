@@ -1,5 +1,4 @@
 { config, ... }: {
-  boot.zfs.forceImportRoot = false;
   environment.persistence."/perm".files = [ "/etc/zfs/zpool.cache" ];
   networking.hostId = "06378c60";
 

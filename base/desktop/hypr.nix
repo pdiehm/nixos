@@ -159,9 +159,6 @@
           ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
           ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
           "SHIFT, XF86AudioMute, exec, wp-toggle"
-
-          "SUPER ALT, f, exec, ha fan toggle fan_desk"
-          "SUPER ALT, l, exec, ha light toggle lamp_desk"
         ];
 
         ecosystem = {

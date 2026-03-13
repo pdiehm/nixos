@@ -168,7 +168,7 @@
 
         general = {
           border_size = 2;
-          "col.active_border" = lib.mkForce "rgb(00dbde) rgb(fc00ff) 45deg";
+          "col.active_border" = lib.mkForce "rgb(60efff) rgb(0061ff) 45deg";
           no_focus_fallback = true;
         };
 

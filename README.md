@@ -37,6 +37,7 @@ NixOS is a fully declarative Linux distribution - and this repository contains t
 | Notification daemon | mako                         |                     |
 | Theme               | base16-colors / onedark.nvim |                     |
 | Font                | Noto / FiraCode (Nerd Fonts) |                     |
+| Icons & Cursor      | Adwaita                      |                     |
 
 ## Structure
 

@@ -16,8 +16,8 @@
     polarity = "dark";
 
     cursor = {
-      name = "Quintom_Ink";
-      package = pkgs.quintom-cursor-theme;
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
       size = 32;
     };
 

@@ -2,7 +2,7 @@ name: Upgrade
 
 on:
   schedule:
-    - cron: "0 0 * * 6"
+    - cron: "0 2 * * 6"
 
 jobs:
   upgrade:

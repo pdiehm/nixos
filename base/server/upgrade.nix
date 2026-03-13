@@ -3,7 +3,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    dates = "Mon 01:00";
+    dates = "Sun 03:00";
     flags = [ "--impure" ];
     flake = "github:pdiehm/nixos";
     operation = "boot";

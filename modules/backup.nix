@@ -71,7 +71,7 @@ in {
         description = "Backup local files";
         preStart = "until ${lib.getExe pkgs.netcat} -z bowser 1970; do sleep 1; done";
         requires = [ "network-online.target" ];
-        startAt = "00:30";
+        startAt = "01:00";
 
         serviceConfig = {
           ExecStart = lib.getExe pkgs.scripts.backup;

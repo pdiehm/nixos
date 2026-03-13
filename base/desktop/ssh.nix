@@ -10,6 +10,9 @@
         "github.com".identityFile = config.sops.secrets."ssh/github".path;
 
         "*" = {
+          controlMaster = "auto";
+          controlPath = "~/.ssh/.%C";
+          controlPersist = "300";
           identitiesOnly = true;
           setEnv.TERM = "xterm-256color";
         };

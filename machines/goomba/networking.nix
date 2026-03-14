@@ -3,12 +3,10 @@
 
   sops.secrets = {
     "goomba/wireguard/key".owner = "systemd-network";
-    "goomba/wireguard/bowser/psk".owner = "systemd-network";
-    "goomba/wireguard/bowser/public".owner = "systemd-network";
-    "goomba/wireguard/pascal-laptop/psk".owner = "systemd-network";
-    "goomba/wireguard/pascal-laptop/public".owner = "systemd-network";
-    "goomba/wireguard/pascal-pc/psk".owner = "systemd-network";
-    "goomba/wireguard/pascal-pc/public".owner = "systemd-network";
+    "goomba/wireguard/network/main".owner = "systemd-network";
+    "goomba/wireguard/peer/bowser".owner = "systemd-network";
+    "goomba/wireguard/peer/pascal-laptop".owner = "systemd-network";
+    "goomba/wireguard/peer/pascal-pc".owner = "systemd-network";
   };
 
   systemd.network = {
@@ -33,8 +31,8 @@
       |> lib.mapAttrsToList (
         name: AllowedIPs: {
           inherit AllowedIPs;
-          PresharedKeyFile = config.sops.secrets."goomba/wireguard/${name}/psk".path;
-          PublicKeyFile = config.sops.secrets."goomba/wireguard/${name}/public".path;
+          PresharedKeyFile = config.sops.secrets."goomba/wireguard/network/main".path;
+          PublicKeyFile = config.sops.secrets."goomba/wireguard/peer/${name}".path;
         }
       );
     };

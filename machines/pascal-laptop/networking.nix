@@ -43,7 +43,7 @@
     };
 
     wg-main = {
-      wireguard.private-key = "$WIREGUARD_PASCAL_LAPTOP_KEY";
+      wireguard.private-key = "$WIREGUARD_KEY_PASCAL_LAPTOP";
 
       connection = {
         autoconnect-priority = 100;
@@ -58,10 +58,10 @@
         method = "manual";
       };
 
-      "wireguard-peer.$WIREGUARD_GOOMBA_PUBLIC" = {
+      "wireguard-peer.$WIREGUARD_PEER_GOOMBA" = {
         allowed-ips = "fd42:5041:5343:414c::/112";
         endpoint = "goomba:51820";
-        preshared-key = "$WIREGUARD_PASCAL_LAPTOP_PSK";
+        preshared-key = "$WIREGUARD_NETWORK_MAIN";
         preshared-key-flags = 0;
       };
     };

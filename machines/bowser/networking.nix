@@ -1,8 +1,8 @@
 { config, lib, ... }: {
   sops.secrets = {
     "bowser/wireguard/key".owner = "systemd-network";
-    "bowser/wireguard/goomba/psk".owner = "systemd-network";
-    "bowser/wireguard/goomba/public".owner = "systemd-network";
+    "bowser/wireguard/network/main".owner = "systemd-network";
+    "bowser/wireguard/peer/goomba".owner = "systemd-network";
   };
 
   systemd.network = {
@@ -18,8 +18,8 @@
         AllowedIPs = [ "fd42:5041:5343:414c::/112" ];
         Endpoint = "goomba:51820";
         PersistentKeepalive = 25;
-        PresharedKeyFile = config.sops.secrets."bowser/wireguard/goomba/psk".path;
-        PublicKeyFile = config.sops.secrets."bowser/wireguard/goomba/public".path;
+        PresharedKeyFile = config.sops.secrets."bowser/wireguard/network/main".path;
+        PublicKeyFile = config.sops.secrets."bowser/wireguard/peer/goomba".path;
       };
     };
 

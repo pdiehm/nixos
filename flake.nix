@@ -62,7 +62,8 @@
         base/${cfg.type}
         machines/${name}
       ]
-      ++ lib.optional (lib.pathExists /etc/nixos/hardware.nix) /etc/nixos/hardware.nix;
+      ++ lib.optional (lib.pathExists /etc/nixos/hardware.nix) /etc/nixos/hardware.nix
+      ++ lib.optional (builtins.getEnv "NIXOS_CI" != "") extra/ci.nix;
 
       specialArgs = {
         inherit inputs lib;

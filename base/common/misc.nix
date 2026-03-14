@@ -1,17 +1,12 @@
-{ inputs, lib, machine, ... }: {
-  hardware.enableRedistributableFirmware = true;
+{ inputs, machine, ... }: {
   networking.hostName = machine.name;
+  nixpkgs.overlays = [ (import ../../overlay) ];
   services.fwupd.enable = true;
 
   environment.variables = {
     NIXOS_MACHINE_BOOT = machine.boot;
     NIXOS_MACHINE_NAME = machine.name;
     NIXOS_MACHINE_TYPE = machine.type;
-  };
-
-  nixpkgs = {
-    hostPlatform = lib.mkOverride 9999 "x86_64-linux";
-    overlays = [ (import ../../overlay) ];
   };
 
   system = {

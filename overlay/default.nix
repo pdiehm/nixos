@@ -20,6 +20,10 @@ pkgs: prev: {
     };
   });
 
+  neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (prev: {
+    patches = (prev.patches or [ ]) ++ [ patches/nvim.patch ];
+  });
+
   prettier = let
     modules = pkgs.importNpmLock.buildNodeModules {
       inherit (pkgs) nodejs;

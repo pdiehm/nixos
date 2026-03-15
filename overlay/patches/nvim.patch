@@ -1,0 +1,29 @@
+diff --git a/src/nvim/option.c b/src/nvim/option.c
+index 4bf2d59..0233411 100644
+--- a/src/nvim/option.c
++++ b/src/nvim/option.c
+@@ -1000,10 +1000,6 @@ static int validate_opt_idx(win_T *win, OptIndex opt_idx, int opt_flags, uint32_
+       *errmsg = e_not_allowed_in_modeline;
+       return FAIL;
+     }
+-    if ((flags & kOptFlagMLE) && !p_mle) {
+-      *errmsg = e_not_allowed_in_modeline_when_modelineexpr_is_off;
+-      return FAIL;
+-    }
+     // In diff mode some options are overruled.  This avoids that
+     // 'foldmethod' becomes "marker" instead of "diff" and that
+     // "wrap" gets set.
+@@ -1325,6 +1321,13 @@ static void do_one_set_option(int opt_flags, char **argp, bool *did_show, char *
+   OptVal newval = get_option_newval(opt_idx, opt_flags, prefix, argp, nextchar, op, flags, varp,
+                                     errbuf, errbuflen, errmsg);
+ 
++  int clear = newval.type == kOptValTypeString && newval.data.string.size == 0;
++
++  if ((opt_flags & OPT_MODELINE) && (flags & kOptFlagMLE) && !p_mle && !clear) {
++    *errmsg = e_not_allowed_in_modeline_when_modelineexpr_is_off;
++    return;
++  }
++
+   if (newval.type == kOptValTypeNil || *errmsg != NULL) {
+     return;
+   }

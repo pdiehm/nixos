@@ -13,6 +13,7 @@
         pull.rebase = true;
         rebase.autoStash = true;
         submodule.recurse = true;
+        tag.gpgSign = false;
 
         alias = {
           a = "add";

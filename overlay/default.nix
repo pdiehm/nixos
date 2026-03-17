@@ -42,6 +42,10 @@ pkgs: prev: {
   '';
 
   vimPlugins = prev.vimPlugins // {
+    autoclose-nvim = prev.vimPlugins.autoclose-nvim.overrideAttrs (prev: {
+      patches = (prev.patches or [ ]) ++ [ patches/nvim-autoclose.patch ];
+    });
+
     conform-nvim = prev.vimPlugins.conform-nvim.overrideAttrs (prev: {
       postPatch = ''
         ${prev.postPatch or ""}

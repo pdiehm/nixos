@@ -1,0 +1,37 @@
+diff --git a/lua/autoclose.lua b/lua/autoclose.lua
+index 2012e2d..6650bf7 100644
+--- a/lua/autoclose.lua
++++ b/lua/autoclose.lua
+@@ -24,7 +24,7 @@ local config = {
+       ["<S-CR>"] = { disable_command_mode = true },
+    },
+    options = {
+-      disabled_filetypes = { "text" },
++      disabled_filetypes = {},
+       disable_when_touch = false,
+       touch_regex = "[%w(%[{]",
+       pair_spaces = false,
+@@ -106,12 +106,22 @@ local function handler(key, info, mode)
+    elseif
+       mode == "insert"
+       and (key == "<CR>" or key == "<S-CR>")
+-      and is_pair(pair)
++      and (is_pair(pair) or pair == "><")
+    then
+       return "<CR><ESC>O" .. (config.options.auto_indent and "" or "<C-D>")
+    elseif info.escape and pair:sub(2, 2) == key then
+       return mode == "insert" and "<C-G>U<Right>" or "<Right>"
+    elseif info.close then
++      if key == "'" and pair:sub(1, 1):match("[^%s_]") then return key end
++      if vim.tbl_contains({'"', "'", "`"}, key) and vim.tbl_contains({'""', "''", "``"}, pair) then return key end
++
++      if mode == "insert" and key == "`" then
++         local line = vim.api.nvim_get_current_line()
++         local col = vim.api.nvim_win_get_cursor(0)[2]
++
++         if line:sub(col - 1, col) == "``" then return "````<Esc>hhi" end
++      end
++
+       -- disable if the cursor touches alphanumeric character
+       if
+          config.options.disable_when_touch

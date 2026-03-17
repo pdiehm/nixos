@@ -180,19 +180,11 @@
       };
 
       plugins = {
+        autoclose.enable = true;
         lspconfig.enable = true;
         nvim-surround.enable = true;
         ts-autotag.enable = true;
         web-devicons.enable = true;
-
-        autoclose = {
-          enable = true;
-
-          settings.keys = {
-            "'".close = false;
-            ">".pair = "><";
-          };
-        };
 
         blink-cmp = {
           enable = true;

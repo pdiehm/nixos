@@ -124,6 +124,7 @@
         "extensions.formautofill.addresses.enabled" = false;
         "extensions.formautofill.creditCards.enabled" = false;
         "media.eme.enabled" = true;
+        "media.webspeech.synth.enabled" = false;
         "places.history.enabled" = false;
         "privacy.history.custom" = true;
       };

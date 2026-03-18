@@ -133,8 +133,8 @@
           shs = "show --stat";
 
           t = "tag";
+          ta = "tag --annotate --sign";
           td = "tag --delete";
-          tm = "tag --message";
         };
 
         fetch = {

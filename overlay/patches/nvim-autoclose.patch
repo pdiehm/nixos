@@ -1,5 +1,5 @@
 diff --git a/lua/autoclose.lua b/lua/autoclose.lua
-index 2012e2d..6650bf7 100644
+index 2012e2d..094041d 100644
 --- a/lua/autoclose.lua
 +++ b/lua/autoclose.lua
 @@ -24,7 +24,7 @@ local config = {
@@ -16,7 +16,7 @@ index 2012e2d..6650bf7 100644
        mode == "insert"
        and (key == "<CR>" or key == "<S-CR>")
 -      and is_pair(pair)
-+      and (is_pair(pair) or pair == "><")
++      and (is_pair(pair) or pair == "><" or pair:match("%w`"))
     then
        return "<CR><ESC>O" .. (config.options.auto_indent and "" or "<C-D>")
     elseif info.escape and pair:sub(2, 2) == key then

@@ -55,7 +55,7 @@
       settings = {
         bindm = [ "SUPER, mouse:272, movewindow" "SUPER, mouse:273, resizewindow" ];
         decoration.rounding = 10;
-        gesture = "3, horizontal, workspace";
+        gesture = [ "3, horizontal, workspace" "3, swipe, mod: SUPER, resize" ];
         windowrule = [ "match:workspace w[t1], match:float 0, border_size 0, rounding 0" ];
         workspace = "w[t1], gapsout:0";
 

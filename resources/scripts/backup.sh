@@ -40,7 +40,7 @@ elif [ "$1" = "restore" ]; then
   TMP="$(mktemp -d)"
   dup restore ${2:+--path-to-restore "${2#/}"} ${3:+--time "$3"} "${TARGET}/${MACHINE}" "$TMP"
 
-  cp -arv "$TMP/." "${2:-/}"
+  cp -abv "$TMP/." "${2:-/}"
   rm -rf "$TMP"
 elif [ "$1" = "status" ]; then
   dup collection-status "${TARGET}/${2:-${MACHINE}}"

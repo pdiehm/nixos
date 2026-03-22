@@ -6,8 +6,19 @@ function await() {
 
   local STATUS="$?"
   local NOW="$(date "+%s%3N")"
+  local TIME="$((NOW - PRE))"
 
-  ntfy "Command '$*' finished in $((NOW - PRE))ms with exit code $STATUS"
+  if [ "$TIME" -lt 1000 ]; then
+    TIME="${TIME}ms"
+  elif [ "$TIME" -lt 60000 ]; then
+    TIME="$((TIME / 1000))s"
+  elif [ "$TIME" -lt 3600000 ]; then
+    TIME="$((TIME / 60000))m $((TIME / 1000 % 60))s"
+  else
+    TIME="$((TIME / 3600000))h $((TIME / 60000 % 60))m $((TIME / 1000 % 60))s"
+  fi
+
+  ntfy "Command '$*' finished in $TIME with exit code $STATUS"
   return "$STATUS"
 }
 

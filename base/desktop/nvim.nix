@@ -1,4 +1,6 @@
 { inputs, lib, machine, pkgs, ... }: {
+  environment.persistence."/perm".users.pascal.directories = [ ".config/github-copilot" ];
+
   home-manager.users.pascal = {
     imports = [ inputs.nixvim.homeModules.nixvim ];
 
@@ -175,7 +177,7 @@
 
         combinePlugins = {
           enable = true;
-          standalonePlugins = [ "onedark.nvim" ];
+          standalonePlugins = [ "copilot.vim" "onedark.nvim" ];
         };
       };
 
@@ -290,6 +292,11 @@
               yaml = [ "prettier" ];
             };
           };
+        };
+
+        copilot-vim = {
+          enable = true;
+          settings.version = false;
         };
 
         gitsigns = {

@@ -8,7 +8,7 @@ echo "## Systems" >>"$GITHUB_STEP_SUMMARY"
 rm -f /nix/var/nix/gcroots/ci/*
 
 while read -r MACHINE; do
-  if NIXOS_CI=1 nix build --impure --show-trace -o "/nix/var/nix/gcroots/ci/$MACHINE" ".#nixosConfigurations.$MACHINE.config.system.build.toplevel" |& sed "s/^evaluation warning: /::warning::/"; then
+  if nix build --show-trace -o "/nix/var/nix/gcroots/ci/$MACHINE" ".#nixosConfigurations.$MACHINE.config.system.build.toplevel" |& sed "s/^evaluation warning: /::warning::/"; then
     echo "- :white_check_mark: $MACHINE" >>"$GITHUB_STEP_SUMMARY"
   else
     echo "- :x: $MACHINE" >>"$GITHUB_STEP_SUMMARY"

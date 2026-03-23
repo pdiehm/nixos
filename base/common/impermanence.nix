@@ -1,5 +1,6 @@
 { config, inputs, lib, ... }: {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
+  boot.initrd.postDeviceCommands = lib.readFile ../../resources/scripts/wipe-root.sh |> lib.mkAfter;
 
   environment.persistence."/perm" = {
     directories = [ "/etc/nixos" "/var/lib/nixos" "/var/lib/systemd" ];

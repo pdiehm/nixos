@@ -192,6 +192,8 @@
           enable = true;
 
           settings = {
+            cmdline.enabled = false;
+            fuzzy.sorts = [ "exact" "score" "sort_text" ];
             signature.enabled = true;
 
             completion = {

@@ -11,7 +11,8 @@
       filetype.extension.zsh = "sh";
       nixpkgs.useGlobalPackages = true;
 
-      autoCmd = lib.mapAttrsToList (event: command: { inherit command event; }) {
+      autoCmd = lib.mkNvimAutoCmds {
+        FileType.csv = "runtime syntax/csv.vim | CsvViewEnable";
         TermClose = "lua if vim.v.event.status ~= 0 then vim.api.nvim_input('<CR>') end";
         TermOpen = "setlocal nospell";
       };
@@ -299,6 +300,11 @@
         copilot-vim = {
           enable = true;
           settings.version = false;
+        };
+
+        csvview = {
+          enable = true;
+          settings.view.display_mode = "border";
         };
 
         gitsigns = {

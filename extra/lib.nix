@@ -43,6 +43,14 @@ lib: prev: {
   |> lib.listToAttrs
   |> lib.mergeAttrs { "*".installation_mode = "blocked"; };
 
+  mkNvimAutoCmds = cmds: lib.mapAttrsToList (
+    event: command: if lib.isAttrs command then
+      lib.mapAttrsToList (pattern: command: { inherit command event pattern; }) command
+    else
+      { inherit command event; }
+  ) cmds
+  |> lib.flatten;
+
   mkNvimFormatters = lib.mapAttrs (
     key: value: {
       command = lib.head value;

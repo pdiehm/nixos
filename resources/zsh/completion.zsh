@@ -31,7 +31,7 @@ function _nx() {
     _values command help build diff edit iso off list repl reset secrets sync test upgrade version
   elif [ "${words[2]}" = "build" ]; then
     if [ "$CURRENT" = 3 ]; then
-      _values host "${(f)$(ls /home/pascal/.config/nixos/machines)}"
+      _values machine "${(f)$(ls /home/pascal/.config/nixos/machines)}"
     fi
   elif [ "${words[2]}" = "iso" ]; then
     if [ "$CURRENT" = 3 ]; then
@@ -39,7 +39,7 @@ function _nx() {
     fi
   elif [ "${words[2]}" = "repl" ]; then
     if [ "$CURRENT" = 3 ]; then
-      _values host "${(f)$(ls /home/pascal/.config/nixos/machines)}"
+      _values machine "${(f)$(ls /home/pascal/.config/nixos/machines)}"
     fi
   elif [ "${words[2]}" = "reset" ]; then
     if [ "$CURRENT" = 3 ]; then

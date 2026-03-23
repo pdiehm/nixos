@@ -59,7 +59,7 @@ lib: prev: {
   |> lib.flatten;
 
   templateString = vars: let
-    keys = lib.attrNames vars |> lib.map (key: "\${${key}}");
+    keys = lib.attrNames vars |> lib.map (key: "@${key}@");
     values = lib.attrValues vars |> lib.map toString;
   in lib.replaceStrings keys values;
 }

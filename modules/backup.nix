@@ -53,13 +53,13 @@ in {
         ) cfg.targets;
       in lib.readFile ../resources/scripts/backup.sh
       |> lib.templateString {
-        BACKUP_KEY = config.sops.common."backup/key".path;
-        BACKUP_PASS = config.sops.common."backup/pass".path;
-        MACHINE = machine.name;
-        POST_SCRIPT = pkgs.writeShellScript "backup-post" cfg.postScript;
-        PRE_SCRIPT = pkgs.writeShellScript "backup-pre" cfg.preScript;
-        SPEC = lib.flatten paths |> lib.escapeShellArgs;
-        TARGET = "sftp://pascal@bowser:1970/archive/Backups";
+        backup_key = config.sops.common."backup/key".path;
+        backup_pass = config.sops.common."backup/pass".path;
+        machine = machine.name;
+        post_script = pkgs.writeShellScript "backup-post" cfg.postScript;
+        pre_script = pkgs.writeShellScript "backup-pre" cfg.preScript;
+        spec = lib.flatten paths |> lib.escapeShellArgs;
+        target = "sftp://pascal@bowser:1970/archive/Backups";
       };
     };
 

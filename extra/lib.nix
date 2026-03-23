@@ -1,4 +1,10 @@
 lib: prev: {
+  importCSV = file: let
+    lines = lib.readFile file |> lib.splitString "\n" |> lib.filter (line: line != "");
+    keys = lib.head lines |> lib.splitString ",";
+    data = lib.tail lines |> lib.map (lib.splitString ",");
+  in lib.map (line: lib.zipListsWith lib.nameValuePair keys line |> lib.listToAttrs) data;
+
   mkFirefoxBookmarks = lib.mapAttrsToList (
     name: value: if lib.isAttrs value then
       {

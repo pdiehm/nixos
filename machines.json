@@ -1,6 +1,0 @@
-{
-  "bowser": { "boot": "EFI", "type": "server" },
-  "goomba": { "boot": "BIOS", "type": "server" },
-  "pascal-laptop": { "boot": "SB", "type": "desktop" },
-  "pascal-pc": { "boot": "SB", "type": "desktop" }
-}

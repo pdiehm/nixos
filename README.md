@@ -41,17 +41,17 @@ NixOS is a fully declarative Linux distribution - and this repository contains t
 
 ## Structure
 
-- [flake.nix](flake.nix): Entry point
-- [machines.json](machines.json): List of machines
+- [flake.nix](flake.nix): Flake entry point
+- [machines.csv](machines.csv): List of machines
 - [apps](apps/): Scripts exported by flake
-- [base](base/): Shared configuration
+- [base](base/): Configuration shared between machines
 - [extra](extra/): Additional nix files
-- [machines](machines/): Machine-specific configuration
-- [modules](modules/): Custom options
-- [overlay](overlay/): Custom packages and overrides
-- [resources](resources/): Resources and non-nix configuration files
-  - [wallpaper.jpg](resources/wallpaper.jpg): Background image ([source](https://wallpaperscraft.com/wallpaper/starry_sky_night_dark_152039))
-  - [extensions](resources/extensions/): Custom extension lock files
+- [machines](machines/): Configuration for each machine
+- [modules](modules/): Custom NixOS modules
+- [overlay](overlay/): Custom nixpkgs overlay
+- [resources](resources/): Resources used by the configuration
+  - [wallpaper.jpg](resources/wallpaper.jpg): My wallpaper ([source](https://wallpaperscraft.com/wallpaper/starry_sky_night_dark_152039))
+  - [extensions](resources/extensions/): Extension lock files
   - [scripts](resources/scripts/): Shell scripts
   - [secrets](resources/secrets/): SOPS stores
 

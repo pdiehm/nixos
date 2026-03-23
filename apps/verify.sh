@@ -14,7 +14,7 @@ while read -r MACHINE; do
     echo "- :x: $MACHINE" >>"$GITHUB_STEP_SUMMARY"
     FAILED=1
   fi
-done < <(jq -r "keys[]" machines.json)
+done < <(tail -n +2 machines.csv | cut -d , -f 1)
 echo "::endgroup::"
 
 # HACK: https://github.com/oppiliappan/statix/issues/139

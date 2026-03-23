@@ -39,9 +39,8 @@
 
   outputs = inputs@{ nixpkgs, ... }: let
     lib = nixpkgs.lib.foldl (lib: lib.extend) nixpkgs.lib [ (import extra/lib.nix) (lib: prev: inputs.home-manager.lib) ];
-
-    eachSystem =
-      fn: lib.genAttrs lib.systems.flakeExposed (sys: fn (nixpkgs.legacyPackages.${sys}.extend (import ./overlay)));
+    overlay = pkgs: pkgs.extend (import ./overlay);
+    eachSystem = fn: lib.genAttrs lib.systems.flakeExposed (sys: overlay nixpkgs.legacyPackages.${sys} |> fn);
 
     installer = lib.genAttrs lib.systems.flakeExposed (
       system: lib.nixosSystem {
@@ -50,32 +49,32 @@
       }
     );
 
-    mkScript = pkgs: name: runtimeInputs: pkgs.writeShellApplication {
+    mkApp = pkgs: name: runtimeInputs: pkgs.writeShellApplication {
       inherit name runtimeInputs;
       text = lib.readFile apps/${name}.sh;
     };
 
-    mkSystem = name: cfg: lib.nixosSystem {
+    mkSystem = machine: lib.nixosSystem {
+      specialArgs = { inherit inputs lib machine; };
+
       modules = [
         ./modules
         base/common
-        base/${cfg.type}
-        machines/${name}
+        base/${machine.type}
+        machines/${machine.name}
       ]
       ++ lib.optional (lib.pathExists /etc/nixos/hardware.nix) /etc/nixos/hardware.nix;
-
-      specialArgs = {
-        inherit inputs lib;
-        machine = cfg // { inherit name; };
-      };
     };
-  in rec {
+  in {
     legacyPackages = eachSystem (pkgs: pkgs);
-    nixosConfigurations = lib.importJSON ./machines.json |> lib.mapAttrs mkSystem |> lib.mergeAttrs { inherit installer; };
+
+    nixosConfigurations = lib.importCSV ./machines.csv
+      |> lib.map (machine: lib.nameValuePair machine.name (mkSystem machine))
+      |> lib.listToAttrs
+      |> lib.mergeAttrs { inherit installer; };
 
     packages = eachSystem (
-      pkgs: lib.mapAttrs (mkScript pkgs) {
-        nixvim = [ nixosConfigurations.pascal-pc.config.home-manager.users.pascal.programs.nixvim.build.package ];
+      pkgs: lib.mapAttrs (mkApp pkgs) {
         upgrade = [ pkgs.cargo-edit pkgs.neovim ];
         verify = [ pkgs.colorized-logs pkgs.nil pkgs.shellcheck ];
 
@@ -91,7 +90,7 @@
           pkgs.parted
           pkgs.pinentry-tty
           pkgs.sbctl
-          (pkgs.writeShellScriptBin "machines" "cat ${./machines.json}")
+          (pkgs.writeShellScriptBin "machines" "cat ${./machines.csv}")
         ];
       }
     );

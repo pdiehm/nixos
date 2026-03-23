@@ -7,14 +7,17 @@ if ! ping -c 1 1.1.1.1 &>/dev/null; then
   exit 1
 fi
 
-TYPE="null"
-while [ "$TYPE" = "null" ]; do
+TYPE=""
+while [ -z "$TYPE" ]; do
   clear
   echo "Which machine should I install?"
   echo
   read -r -p "> " MACHINE
-  BOOT="$(machines | jq -r ".\"$MACHINE\".boot")"
-  TYPE="$(machines | jq -r ".\"$MACHINE\".type")"
+
+  if CFG="$(machines | tail -n +2 | sed "s/^/@/" | grep -F "@$MACHINE,")"; then
+    TYPE="$(cut -d , -f 2 <<<"$CFG")"
+    BOOT="$(cut -d , -f 3 <<<"$CFG")"
+  fi
 done
 
 DEV=""

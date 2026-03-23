@@ -1,0 +1,5 @@
+name,type,boot
+bowser,server,EFI
+goomba,server,BIOS
+pascal-laptop,desktop,SB
+pascal-pc,desktop,SB

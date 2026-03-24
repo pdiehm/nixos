@@ -65,6 +65,11 @@ elif [ "$1" = "sync" ]; then
 elif [ "$1" = "test" ]; then
   nixos-rebuild --sudo --impure --flake ~/.config/nixos test
 elif [ "$1" = "upgrade" ]; then
+  if [ "$(git -C ~/.config/nixos rev-parse HEAD)" = "$(nixos-version --configuration-revision)" ]; then
+    echo "Nothing to do"
+    exit
+  fi
+
   sudo --validate
   while true; do
     for _ in {0..99}; do sleep 1; done

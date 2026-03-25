@@ -1,37 +1,12 @@
 #!/usr/bin/env bash
 
-set +e
-PAT_SSHD_PASSWORD="^(Accepted|Failed) password for (\w+) from (\S+) port [0-9]+ ssh2$"
-PAT_SSHD_PUBLICKEY="^(Accepted|Failed) publickey for (\w+) from (\S+) port [0-9]+ ssh2: \S+ SHA256:\S+$"
-PAT_SSHD_USER_DENIED="^User (\w+) from (\S+) not allowed because not listed in AllowUsers$"
-PAT_SSHD_USER_INVALID="^Invalid user (\w+) from (\S+) port [0-9]+$"
-PAT_SUDO_COMMAND="^\s+(\w+) : TTY=\S+ ; PWD=\S+ ; USER=(\w+) ; COMMAND=(.+)$"
-PAT_SYSTEMD_FAILED="^(\S+): Failed with result '(.+)'\.$"
-PAT_SYSTEMD_STARTUP="^Startup finished in .+ = (.+)\.$"
+SCRIPT="s/^\w+ \w+ \S+ \S+ ([^:[]+)[^:]*: (.+)$/\1::\2/;"
+SCRIPT+="s/^sshd-session::(Accepted|Failed) password for (\w+) from (\S+) port \w+ ssh2$/[sshd] \1 password for \2 from \3/p;"
+SCRIPT+="s/^sshd-session::(Accepted|Failed) publickey for (\w+) from (\S+) port \w+ ssh2: \S+ SHA256:\S+$/[sshd] \1 publickey for \2 from \3/p;"
+SCRIPT+="s/^sshd-session::Invalid user (\w+) from (\S+) port \w+$/[sshd] Invalid user \1 from \2/p;"
+SCRIPT+="s/^sshd-session::User (\w+) from (\S+) not allowed because not listed in AllowUsers$/[sshd] Denied user \1 from \2/p;"
+SCRIPT+="s/^sudo::\s+(\w+) : .* USER=(\w+) .* COMMAND=(.+)$/[sudo] \1 as \2: \3/p;"
+SCRIPT+="s/^systemd::(\S+): Failed with result '(.+)'\.$/[systemd] \1 failed: \2/p;"
+SCRIPT+="s/^systemd::Startup finished in .+ = (.+)\.$/[systemd] Booted in \1/p;"
 
-journalctl --follow --no-tail --output json | while read -r LINE; do
-  SERVICE="$(jq -r .SYSLOG_IDENTIFIER <<<"$LINE")"
-  MESSAGE="$(jq -r .MESSAGE <<<"$LINE")"
-
-  if [ "$SERVICE" = "sshd-session" ]; then
-    if grep -Eq "$PAT_SSHD_PASSWORD" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SSHD_PASSWORD/[sshd] \1 password for \2 from \3/" <<<"$MESSAGE")"
-    elif grep -Eq "$PAT_SSHD_PUBLICKEY" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SSHD_PUBLICKEY/[sshd] \1 publickey for \2 from \3/" <<<"$MESSAGE")"
-    elif grep -Eq "$PAT_SSHD_USER_DENIED" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SSHD_USER_DENIED/[sshd] Denied user \1 from \2/" <<<"$MESSAGE")"
-    elif grep -Eq "$PAT_SSHD_USER_INVALID" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SSHD_USER_INVALID/[sshd] Invalid user \1 from \2/" <<<"$MESSAGE")"
-    fi
-  elif [ "$SERVICE" = "sudo" ]; then
-    if grep -Eq "$PAT_SUDO_COMMAND" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SUDO_COMMAND/[sudo] \1 as \2: \3/" <<<"$MESSAGE")"
-    fi
-  elif [ "$SERVICE" = "systemd" ]; then
-    if grep -Eq "$PAT_SYSTEMD_FAILED" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SYSTEMD_FAILED/[systemd] \1 failed: \2/" <<<"$MESSAGE")"
-    elif grep -Eq "$PAT_SYSTEMD_STARTUP" <<<"$MESSAGE"; then
-      ntfy journal "$(sed -E "s/$PAT_SYSTEMD_STARTUP/[systemd] Booted in \1/" <<<"$MESSAGE")"
-    fi
-  fi
-done
+journalctl --follow --no-tail | sed -Enu "$SCRIPT" | while read -r MSG; do ntfy journal "$MSG"; done

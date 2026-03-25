@@ -2,7 +2,7 @@
   systemd.services.journalwatch = {
     after = [ "network-online.target" ];
     description = "Watch journalctl and report security-relevant events to ntfy";
-    path = [ pkgs.jq pkgs.scripts.ntfy ];
+    path = [ pkgs.scripts.ntfy ];
     preStart = "until ${lib.getExe pkgs.netcat} -z ntfy.pdiehm.dev 80; do sleep 1; done";
     requires = [ "network-online.target" ];
     restartIfChanged = false;

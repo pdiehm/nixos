@@ -27,7 +27,6 @@ elif [ "$1" = "build" ]; then
   nixos-rebuild --impure --flake "$HOME/.config/nixos#${2:-$NIXOS_MACHINE_NAME}" build
 elif [ "$1" = "diff" ]; then
   REV="$(nixos-version --configuration-revision)"
-
   if [ "$REV" = "<dirty>" ]; then
     echo "Error: unstable revision"
     exit 1
@@ -65,6 +64,7 @@ elif [ "$1" = "sync" ]; then
 elif [ "$1" = "test" ]; then
   nixos-rebuild --sudo --impure --flake ~/.config/nixos test
 elif [ "$1" = "upgrade" ]; then
+  git -C ~/.config/nixos pull
   if [ "$(git -C ~/.config/nixos rev-parse HEAD)" = "$(nixos-version --configuration-revision)" ]; then
     echo "Nothing to do"
     exit
@@ -79,7 +79,6 @@ elif [ "$1" = "upgrade" ]; then
   SUDO_LOOP_PID="$!"
   trap 'kill "$SUDO_LOOP_PID"' EXIT
 
-  git -C ~/.config/nixos pull
   nixos-rebuild --sudo --impure --flake ~/.config/nixos "${2:-boot}"
 elif [ "$1" = "version" ]; then
   REV="$(nixos-version --configuration-revision)"

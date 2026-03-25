@@ -58,7 +58,7 @@
   };
 
   systemd.services.dynhostmgr = {
-    after = [ "network.target" "NetworkManager-wait-online.service" "systemd-networkd-wait-online.service" ];
+    after = [ "NetworkManager-wait-online.service" "network.target" "systemd-networkd-wait-online.service" ];
     before = [ "network-online.target" ];
     description = "Dynamically update /etc/hosts with reachable addresses";
     postStart = "until grep -q '### DYNAMIC HOSTS START ###' /etc/hosts; do sleep 1; done";

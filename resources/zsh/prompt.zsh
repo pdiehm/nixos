@@ -6,7 +6,7 @@ export PROMPT='%F{4}%~%f$(_prompt_git) %F{%(?.5.1)}$(_prompt_char)%f '
 export RPROMPT='$(_prompt_host)'
 
 function _prompt_char() {
-  if expr "$TTY" : /dev/tty >/dev/null; then
+  if expr "$TTY" : /dev/tty > /dev/null; then
     echo -n ">"
   else
     echo -en "\u276F"
@@ -14,7 +14,7 @@ function _prompt_char() {
 }
 
 function _prompt_git() {
-  git rev-parse HEAD &>/dev/null || return
+  git rev-parse HEAD &> /dev/null || return
 
   local BRANCH="$(git rev-parse --abbrev-ref HEAD)"
   if [ "$BRANCH" = "HEAD" ]; then
@@ -24,8 +24,8 @@ function _prompt_git() {
   fi
 
   local STATUS="$(timeout 0.1 git status --porcelain)"
-  local CHANGED="$(grep -Ec "^.(\w|\?)" <<<"$STATUS")"
-  local STAGED="$(grep -Ec "^\w." <<<"$STATUS")"
+  local CHANGED="$(grep -Ec "^.(\w|\?)" <<< "$STATUS")"
+  local STAGED="$(grep -Ec "^\w." <<< "$STATUS")"
 
   if [ "$CHANGED" -gt 0 ] && [ "$STAGED" -gt 0 ]; then
     echo -n "%F{6}\u203D%f"
@@ -38,7 +38,7 @@ function _prompt_git() {
   test -n "$(git stash list)" && echo -n " %F{6}\u2026%f"
 
   if [ -n "$(git remote show)" ] && [ "$BRANCH" != "HEAD" ]; then
-    if git rev-parse "@{u}" &>/dev/null; then
+    if git rev-parse "@{u}" &> /dev/null; then
       local AHEAD="$(git rev-list --count "@{u}..")"
       local BEHIND="$(git rev-list --count "..@{u}")"
 
@@ -62,8 +62,8 @@ function _prompt_git() {
   elif [ -f "$GIT_DIR/BISECT_LOG" ]; then
     echo -n " %F{1}(bisect)%f"
   elif [ -f "$GIT_DIR/rebase-merge/interactive" ]; then
-    local STEP="$(<"$GIT_DIR/rebase-merge/msgnum")"
-    local TOTAL="$(<"$GIT_DIR/rebase-merge/end")"
+    local STEP="$(< "$GIT_DIR/rebase-merge/msgnum")"
+    local TOTAL="$(< "$GIT_DIR/rebase-merge/end")"
     echo -n " %F{1}(rebase)%f %F{6}$STEP%F{8}/%F{6}$TOTAL%f"
   fi
 }

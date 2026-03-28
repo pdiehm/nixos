@@ -14,10 +14,10 @@ elif [ "$1" = "android" ]; then
 elif [ "$1" = "tmpfs" ]; then
   sudo mount -t tmpfs tmpfs "$TMP"
   ROOT=1
-elif expr "$1" : ftp:// >/dev/null; then
+elif expr "$1" : ftp:// > /dev/null; then
   curlftpfs "$1" "$TMP"
-elif expr "$1" : ssh:// >/dev/null; then
-  sshfs "$(sed -E "s|^ssh://([^:]+)(:(.*))?$|\1:\3|" <<<"$1")" "$TMP"
+elif expr "$1" : ssh:// > /dev/null; then
+  sshfs "$(sed -E "s|^ssh://([^:]+)(:(.*))?$|\1:\3|" <<< "$1")" "$TMP"
 elif [ -b "$1" ] || [ -f "$1" ]; then
   sudo mount "$1" "$TMP"
   ROOT=1

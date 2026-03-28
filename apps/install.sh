@@ -2,7 +2,7 @@
 
 test "$UID" = 0 || exec sudo "$0" "$@"
 
-if ! ping -c 1 1.1.1.1 &>/dev/null; then
+if ! ping -c 1 1.1.1.1 &> /dev/null; then
   echo "No internet connection"
   exit 1
 fi
@@ -15,8 +15,8 @@ while [ -z "$TYPE" ]; do
   read -r -p "> " MACHINE
 
   if CFG="$(machines | tail -n +2 | sed "s/^/@/" | grep -F "@$MACHINE,")"; then
-    TYPE="$(cut -d , -f 2 <<<"$CFG")"
-    BOOT="$(cut -d , -f 3 <<<"$CFG")"
+    TYPE="$(cut -d , -f 2 <<< "$CFG")"
+    BOOT="$(cut -d , -f 3 <<< "$CFG")"
   fi
 done
 
@@ -32,7 +32,7 @@ until [ -b "$DEV" ]; do
 done
 
 if [ "$BOOT" = "SB" ]; then
-  if ! sbctl status &>/dev/null || [ "$(sbctl status --json | jq .setup_mode)" = "false" ]; then
+  if ! sbctl status &> /dev/null || [ "$(sbctl status --json | jq .setup_mode)" = "false" ]; then
     echo "Secure boot is disabled or not in setup mode"
     exit 1
   fi
@@ -85,8 +85,8 @@ if [ "$TYPE" = "desktop" ]; then
   echo "Encrypting root partition..."
   read -rs -p "Enter disk encryption password: " FDE_PASS
 
-  cryptsetup luksFormat "$PART_NIXOS" <<<"$FDE_PASS"
-  cryptsetup open "$PART_NIXOS" nixos <<<"$FDE_PASS"
+  cryptsetup luksFormat "$PART_NIXOS" <<< "$FDE_PASS"
+  cryptsetup open "$PART_NIXOS" nixos <<< "$FDE_PASS"
 
   unset FDE_PASS
   PART_NIXOS="/dev/mapper/nixos"
@@ -118,7 +118,7 @@ fi
 
 echo "Generating hardware configuration..."
 mkdir -p /mnt/perm/etc/nixos
-nixos-generate-config --root /mnt --show-hardware-config --no-filesystems >/mnt/perm/etc/nixos/hardware.nix
+nixos-generate-config --root /mnt --show-hardware-config --no-filesystems > /mnt/perm/etc/nixos/hardware.nix
 ln -s /mnt/perm/etc/nixos/hardware.nix /etc/nixos/hardware.nix
 test "$BOOT" = "BIOS" && sed -i "\$i\\  boot.loader.grub.device = \"$DEV\";" /mnt/perm/etc/nixos/hardware.nix
 
@@ -131,12 +131,12 @@ chmod 700 /mnt/perm/home/pascal
 echo "Preparing GnuPG..."
 mkdir -p ~/.gnupg
 chmod 700 ~/.gnupg
-echo "pinentry-program $(which pinentry-tty)" >~/.gnupg/gpg-agent.conf
+echo "pinentry-program $(which pinentry-tty)" > ~/.gnupg/gpg-agent.conf
 
 echo "Setting up GnuPG..."
 mkdir -p /mnt/perm/etc/nixos/.gnupg
 chmod 700 /mnt/perm/etc/nixos/.gnupg
-echo "disable-scdaemon" >/mnt/perm/etc/nixos/.gnupg/gpg-agent.conf
+echo "disable-scdaemon" > /mnt/perm/etc/nixos/.gnupg/gpg-agent.conf
 
 echo "Installing secret key..."
 curl -fsSLO "https://raw.githubusercontent.com/pdiehm/nixos/main/resources/secrets/$TYPE/key.gpg"

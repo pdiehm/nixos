@@ -77,11 +77,11 @@ elif [ "$1" = "list" ]; then
     test -d "$REPO" || continue
     cd "$REPO"
 
-    URL="$(git remote get-url origin 2>/dev/null || echo "local")"
-    HEAD="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+    URL="$(git remote get-url origin 2> /dev/null || echo "local")"
+    HEAD="$(git rev-parse --abbrev-ref HEAD 2> /dev/null || true)"
 
     if [ "$HEAD" = "HEAD" ]; then
-      if git rev-parse HEAD &>/dev/null; then
+      if git rev-parse HEAD &> /dev/null; then
         echo -e "\e[1;34m$REPO \e[0;33m$(git rev-parse --short HEAD) \e[90m$URL"
       else
         echo -e "\e[1;34m$REPO \e[0;31mEMPTY \e[90m$URL"
@@ -92,7 +92,7 @@ elif [ "$1" = "list" ]; then
         CHANGES="\e[36m*"
       else
         while read -r BRANCH; do
-          if ! git rev-parse "$BRANCH@{upstream}" &>/dev/null || [ -n "$(git rev-list "$BRANCH@{upstream}..$BRANCH")" ]; then
+          if ! git rev-parse "$BRANCH@{upstream}" &> /dev/null || [ -n "$(git rev-list "$BRANCH@{upstream}..$BRANCH")" ]; then
             CHANGES="\e[36m+"
             break
           fi
@@ -121,7 +121,7 @@ elif [ "$1" = "remove" ]; then
   test -n "$(git stash list)" && CHANGES+="  - Stashed changes\n"
 
   while read -r BRANCH; do
-    if git rev-parse "$BRANCH@{upstream}" &>/dev/null; then
+    if git rev-parse "$BRANCH@{upstream}" &> /dev/null; then
       test -n "$(git rev-list "$BRANCH@{upstream}..$BRANCH")" && CHANGES+="  - Unpushed commits ($BRANCH)\n"
     else
       CHANGES+="  - Local branch ($BRANCH)\n"
@@ -168,14 +168,14 @@ elif [ "$1" = "status" ]; then
     cd "$1"
     git fetch
 
-    HEAD="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+    HEAD="$(git rev-parse --abbrev-ref HEAD 2> /dev/null || true)"
     if [ "$HEAD" = "HEAD" ]; then
       HEAD="\e[33m$(git rev-parse --short HEAD)"
     else
       HEAD="\e[32m$HEAD"
     fi
 
-    echo -e "\e[1mRepo: \e[34m$1 \e[m($HEAD\e[m, \e[90m$(git remote get-url origin 2>/dev/null || echo "local")\e[m)"
+    echo -e "\e[1mRepo: \e[34m$1 \e[m($HEAD\e[m, \e[90m$(git remote get-url origin 2> /dev/null || echo "local")\e[m)"
     echo
 
     if [ -n "$(git status --porcelain)" ]; then
@@ -187,7 +187,7 @@ elif [ "$1" = "status" ]; then
     git branch --format "%(refname:short)" | while read -r BRANCH; do
       COMMIT="$(git show --oneline --no-patch "$BRANCH" | sed -E 's/^(\w+) (.+)$/\\e[33m\1 \\e[m\2/')"
 
-      if git rev-parse "$BRANCH@{upstream}" &>/dev/null; then
+      if git rev-parse "$BRANCH@{upstream}" &> /dev/null; then
         AHEAD="$(git rev-list --count "$BRANCH@{upstream}..$BRANCH")"
         BEHIND="$(git rev-list --count "$BRANCH..$BRANCH@{upstream}")"
 
@@ -246,7 +246,7 @@ elif [ "$1" = "update" ]; then
 
     git branch --format "%(refname:short)" | while read -r BRANCH; do
       git checkout "$BRANCH"
-      git rev-parse "@{u}" &>/dev/null || continue
+      git rev-parse "@{u}" &> /dev/null || continue
 
       if [ -n "$(git status --porcelain)" ]; then
         git stash push --include-untracked
@@ -269,7 +269,7 @@ elif [ "$1" = "update" ]; then
   if [ "$#" = 1 ]; then
     for REPO in *; do
       test -d "$REPO" || continue
-      git -C "$REPO" rev-parse HEAD &>/dev/null || continue
+      git -C "$REPO" rev-parse HEAD &> /dev/null || continue
 
       update "$REPO"
     done

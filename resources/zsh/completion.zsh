@@ -35,7 +35,7 @@ function _nx() {
     fi
   elif [ "${words[2]}" = "iso" ]; then
     if [ "$CURRENT" = 3 ]; then
-      _values system "${(f)$(nix eval --impure --raw --expr 'let lib = (import <nixpkgs> {}).lib; in lib.concatLines lib.systems.flakeExposed' 2>/dev/null)}"
+      _values system "${(f)$(nix eval --impure --raw --expr 'let lib = (import <nixpkgs> {}).lib; in lib.concatLines lib.systems.flakeExposed' 2> /dev/null)}"
     fi
   elif [ "${words[2]}" = "repl" ]; then
     if [ "$CURRENT" = 3 ]; then

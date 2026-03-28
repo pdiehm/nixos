@@ -235,7 +235,7 @@
               isort = [ (lib.getExe pkgs.python3Packages.isort) ];
               nixfmt = [ (lib.getExe pkgs.nixfmt) "--strict" "--width=120" ];
               rustfmt = [ (lib.getExe pkgs.rustfmt) ];
-              shfmt = [ (lib.getExe pkgs.shfmt) "--indent=2" ];
+              shfmt = [ (lib.getExe pkgs.shfmt) "--case-indent" "--indent=2" "--space-redirects" ];
               stylua = [ (lib.getExe pkgs.stylua) "--column-width=120" "--indent-type=Spaces" "--indent-width=2" ];
 
               bibtex-tidy = [

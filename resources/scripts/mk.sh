@@ -9,5 +9,5 @@ elif [ -f "${2:-$1}" ]; then
   echo "${2:-$1} already exists"
   exit 1
 else
-  sed "s/@YEAR@/$(date "+%Y")/" <"@src@/$1" >"${2:-$1}"
+  sed "s/@YEAR@/$(date "+%Y")/" < "@src@/$1" > "${2:-$1}"
 fi

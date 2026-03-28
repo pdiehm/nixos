@@ -66,7 +66,9 @@
 
           d = "diff";
           dm = "diff main";
+          dn = "diff --ignore-all-space";
           ds = "diff --staged";
+          dsn = "diff --staged --ignore-all-space";
           du = "diff '@{u}'";
 
           dl = "rev-list --left-right --oneline";

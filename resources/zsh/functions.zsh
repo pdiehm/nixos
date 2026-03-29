@@ -45,15 +45,15 @@ function mkcd() {
 }
 
 function watch() (
-  trap "tput cnorm; tput rmcup" EXIT
+  trap "printf '\e[?25h\e[?1049l'" EXIT
   trap "exit 0" INT
 
-  tput smcup
-  tput civis
+  printf '\e[?25l\e[?1049h'
 
-  while clear; do
-    echo -e "\e[90mWatching: $*\e[m\n"
-    eval "$*"
+  while true; do
+    printf "\e[H\e[2mWatching: %s\e[m\n\n" "$*"
+    script -q -c "zsh -ic $(printf "%q" "$*")" /dev/null | sed $'s/^/\e[K/'
+    printf "\e[J"
 
     sleep 1
   done

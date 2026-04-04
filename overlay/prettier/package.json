@@ -1,8 +1,8 @@
 {
   "name": "prettier",
-  "version": "2026-01-26",
+  "version": "2026-04-04",
   "dependencies": {
-    "@prettier/plugin-php": "^0.24.0",
+    "@prettier/plugin-php": "^0.25.0",
     "@prettier/plugin-xml": "^3.4.2",
     "prettier": "^3.8.1",
     "prettier-plugin-css-order": "^2.2.0",

@@ -9,4 +9,4 @@ SCRIPT+="s/^sudo::\s+(\w+) : .* USER=(\w+) .* COMMAND=(.+)$/[sudo] \1 as \2: \3/
 SCRIPT+="s/^systemd::(\S+): Failed with result '(.+)'\.$/[systemd] \1 failed: \2/p;"
 SCRIPT+="s/^systemd::Startup finished in .+ = (.+)\.$/[systemd] Booted in \1/p;"
 
-journalctl --follow --no-tail | sed -Enu "$SCRIPT" | while read -r MSG; do ntfy journal "$MSG"; done
+journalctl --follow --no-tail | sed -Enu "$SCRIPT" | while read -r MSG; do ntfy journal "$MSG" || true; done

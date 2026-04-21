@@ -1,6 +1,5 @@
 pkgs: prev: {
   mpv = prev.mpv.override { scripts = [ ]; };
-  nix = prev.nixVersions.nix_2_32; # HACK: nix >=2.32
   nixfmt = prev.nixfmt.overrideAttrs (prev: { patches = (prev.patches or [ ]) ++ [ patches/nixfmt.patch ]; });
 
   dynhostmgr = pkgs.rustPlatform.buildRustPackage {
@@ -9,16 +8,6 @@ pkgs: prev: {
     cargoLock.lockFile = dynhostmgr/Cargo.lock;
     meta.mainProgram = "dynhostmgr";
   };
-
-  # HACK: https://nixpkgs-tracker.ocfox.me/?pr=490763
-  less = prev.less.overrideAttrs (prev: rec {
-    version = "692";
-
-    src = pkgs.fetchurl {
-      url = "https://www.greenwoodsoftware.com/less/less-${version}.tar.gz";
-      hash = "sha256-YTAPYDeY7PHXeGVweJ8P8/WhrPB1pvufdWg30WbjfRQ=";
-    };
-  });
 
   neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (prev: {
     patches = (prev.patches or [ ]) ++ [ patches/nvim.patch ];

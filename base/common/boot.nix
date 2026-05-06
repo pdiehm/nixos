@@ -1,8 +1,12 @@
 { inputs, lib, machine, pkgs, ... }: {
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    grub.device = lib.mkDefault "/dev/null" |> lib.mkIf (machine.boot == "BIOS");
-    systemd-boot.enable = machine.boot == "EFI";
+  boot = {
+    initrd.systemd.enable = false;
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub.device = lib.mkDefault "/dev/null" |> lib.mkIf (machine.boot == "BIOS");
+      systemd-boot.enable = machine.boot == "EFI";
+    };
   };
 
   fileSystems = {
